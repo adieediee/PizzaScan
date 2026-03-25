@@ -1,0 +1,66 @@
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.color-preview {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  margin-right: 0px; 
+  border-radius: 15px;
+  align-content: center;
+}
+
+.color-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.class-preview {
+  padding: 25px;
+  background:#2D2D42;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.class-form {
+  padding: 10px 20px;
+}
+
+.btn-create {
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+}
+
+.btn-cancel {
+    width: 100%;
+    color: white;
+    padding: 10px;
+}
+
+.warning-text {
+  margin: 5px 0 5px 0;
+  text-align: center;
+  color: #F480A6;
+}
+
+.form-group {
+  display: flex;
+  gap: 30px;
+}
+
+.info-icon {
+  position: relative;
+  display: inline-block;
+  font-size: smaller;
+}
+
+.shortcut-form {
+  display: flex;
+}

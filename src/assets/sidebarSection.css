@@ -1,0 +1,61 @@
+.section {
+  border-bottom: var(--dark-dark3, #2D2D42) 1px solid;
+  padding: 15px;
+}
+
+.title-chevron {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  margin-bottom: 15px;
+}
+
+.title-chevron h3 {
+  margin: 0;
+}
+
+.title-chevron button {
+  margin: 0;
+  padding: 0;
+}
+
+.chevron-btn.rotated {
+    transform: rotate(-90deg);
+}
+
+.cutout {
+    max-width: 100%;
+    width: 100%;
+    height: 150px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tools .btn {
+  padding: 7px;
+}
+
+.tools .svg-inline--fa {
+  color: #6A6A8C;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+}
+
+.tooltip-section {
+  display: none;
+  visibility: visible;
+}
+  
+.btn-icon:hover .tooltip-section {
+  display: block;
+  opacity: 1;
+}

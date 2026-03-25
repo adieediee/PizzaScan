@@ -1,0 +1,21 @@
+.confirm-modal-content {
+    background: var(--dark-dark1, #101021);
+    padding: 20px;
+    width: 40%;
+    border-radius: 15px;
+}
+
+.modal-title h2 {
+    margin: 0;
+    font-weight: bold;
+}
+
+.div-button {
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+}
+
+.div-button .btn {
+    padding: 10px;
+}
