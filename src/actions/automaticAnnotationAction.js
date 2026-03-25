@@ -1,4 +1,29 @@
 import squareAnnotations from "./automaticAnnotationSquares.json";
+import subImageMap from "./pizzaSubImageMap.json";
+import { v4 as uuidv4 } from "uuid";
+
+const PIZZA_SUB_IMAGE_COUNT = 8;
+
+const loadPizzaSubImages = (imageStore, canvasStore) => {
+  if (!canvasStore.selectedImage) return;
+
+  const parentImageId = canvasStore.selectedImage.imageId;
+  const subImages = Array.from({ length: PIZZA_SUB_IMAGE_COUNT }, (_, i) => {
+    const name = `pizza-${i + 1}`;
+    const crop = subImageMap.find((m) => m.name === name) || null;
+    return {
+      imageName: name,
+      imageUrl: `/${name}.png`,
+      imageId: uuidv4(),
+      isSubImage: true,
+      parentImageId,
+      subImageIndex: i,
+      crop,
+    };
+  });
+
+  imageStore.addSubImages(parentImageId, subImages);
+};
 
 const normalizeSquare = (square) => {
   if (!square) return null;
@@ -54,8 +79,6 @@ const addSquaresFromJson = (annotationStore, canvasStore) => {
 
 export const createAutomaticAnnotationHandler = (boardingStore, annotationStore, canvasStore) => {
   return () => {
-    console.log("Hello World!");
-
     if (!boardingStore.automaticAnnotationTutorialSeen) {
       boardingStore.setAutomaticAnnotationTutorialOn();
     } else {
@@ -63,5 +86,11 @@ export const createAutomaticAnnotationHandler = (boardingStore, annotationStore,
     }
 
     addSquaresFromJson(annotationStore, canvasStore);
+  };
+};
+
+export const createAIDetectionHandler = (imageStore, canvasStore) => {
+  return () => {
+    loadPizzaSubImages(imageStore, canvasStore);
   };
 };

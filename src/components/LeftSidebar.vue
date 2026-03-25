@@ -50,6 +50,7 @@
         @selectImage="selectImage"
         @toggleChevron="toggleChevron"
         @openImageMenu="openImageMenu"
+        @selectSubImage="selectSubImage"
       />
     </div>    
 
@@ -85,6 +86,11 @@ const selectImage = (img, index) => {
   canvasStore.setImage(img);
   imageStore.updateImageInfo(index);
   imageStore.setSeenImage(index);
+  emit('imageSelected');
+};
+
+const selectSubImage = (parentImage, subImage) => {
+  imageStore.selectSubImage(parentImage, subImage);
   emit('imageSelected');
 };
 

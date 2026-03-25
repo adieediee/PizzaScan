@@ -17,7 +17,7 @@ export const useImageStore = defineStore('image', {
     uploadedImages: [],
     currentPercentageUpload: 0,
     uploadModalVisible: false,
-    imageInfo: null, 
+    imageInfo: null,
     selectedAnnotation: null,
     copiedAnnotation: null,
     croppedImage: null,
@@ -25,6 +25,8 @@ export const useImageStore = defineStore('image', {
     projectOutcome: null,
     rightClickedImage: null,
     activeTab: "Project",
+    activeSubImage: null,
+    activeSubImageParent: null,
   }),
   
   actions: {
@@ -76,7 +78,9 @@ export const useImageStore = defineStore('image', {
         item.isOpen = i === index;
       });
 
-      this.uploadedImages[index].onceOpen = true; 
+      this.uploadedImages[index].onceOpen = true;
+      this.activeSubImage = null;
+      this.activeSubImageParent = null;
     },
 
     setOnceSeenImage() {
@@ -118,6 +122,43 @@ export const useImageStore = defineStore('image', {
 
     setUploadModalVisible() {
       this.uploadModalVisible = !this.uploadModalVisible;
-    }
+    },
+
+    addSubImages(imageId, subImages) {
+      const image = this.uploadedImages.find(img => img.imageId === imageId);
+      if (image) {
+        image.subImages = subImages;
+      }
+    },
+
+    removeSubImages(imageId) {
+      const image = this.uploadedImages.find(img => img.imageId === imageId);
+      if (image) {
+        image.subImages = [];
+      }
+      if (this.activeSubImageParent?.imageId === imageId) {
+        this.activeSubImage = null;
+        this.activeSubImageParent = null;
+      }
+    },
+
+    selectSubImage(parentImage, subImage) {
+      this.activeSubImageParent = parentImage;
+      this.activeSubImage = subImage;
+      useCanvasStore().setImage(subImage);
+    },
+
+    navigateSubImage(direction) {
+      if (!this.activeSubImageParent || !this.activeSubImage) return;
+      const subImages = this.activeSubImageParent.subImages;
+      const currentIndex = this.activeSubImage.subImageIndex;
+      const nextIndex = (currentIndex + direction + subImages.length) % subImages.length;
+      this.selectSubImage(this.activeSubImageParent, subImages[nextIndex]);
+    },
+
+    clearSubImageSelection() {
+      this.activeSubImage = null;
+      this.activeSubImageParent = null;
+    },
   },
 });

@@ -139,6 +139,27 @@ export const useAnnotationStore = defineStore("annotation", {
       });
 
       this.updateHistory("add", annotation);
+
+      // Ak anotujeme sub-image, premapuj anotáciu na main image
+      const imageStore = useImageStore();
+      const activeSubImage = imageStore.activeSubImage;
+      if (activeSubImage?.isSubImage && activeSubImage.crop) {
+        const canvasStore = useCanvasStore();
+        const scale = canvasStore.imageScale;
+        const mappedX = x + activeSubImage.crop.x * scale;
+        const mappedY = y + activeSubImage.crop.y * scale;
+
+        const mappedAnnotation = {
+          ...annotation,
+          id: this.annotations.length + 1,
+          imageId: activeSubImage.parentImageId,
+          x: mappedX,
+          y: mappedY,
+          isMappedFromSubImage: true,
+          sourceSubImageId: activeSubImage.imageId,
+        };
+        this.annotations.push(mappedAnnotation);
+      }
     },
 
     addAIannotation(imageId, microtubularDefectValue, x1, y1, x2, y2) {

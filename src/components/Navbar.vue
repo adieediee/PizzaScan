@@ -24,6 +24,16 @@
           :text="$t('layoutTutorial.step2')"
         />
       </div>
+      <div>
+        <button
+          id="ai-detection-button"
+          class="btn btn-icon btn-ai-detection"
+          @click="aiDetection"
+          :disabled="!boardingStore.wholeTutorialSeen || !canvasStore.selectedImage">
+            AI Detection
+            <span v-if="!boardingStore.explainNav" class="tooltip">Run AI pizza detection</span>
+        </button>
+      </div>
       <div class="tools-for-image">
         <div>
           <button 
@@ -254,7 +264,7 @@ import { useStatisticStore } from "@/stores/StatisticStore";
 import LoadingModal from '@/components/Modals/LoadingModal.vue';
 import ExplanationComponent from '@/components/Modals/ExplanationComponent.vue';
 import Logo from '@/assets/logo.png';
-import { createAutomaticAnnotationHandler } from '@/actions/automaticAnnotationAction';
+import { createAutomaticAnnotationHandler, createAIDetectionHandler } from '@/actions/automaticAnnotationAction';
 
 const canvasStore = useCanvasStore();
 const annotationStore = useAnnotationStore();
@@ -278,6 +288,7 @@ const selectedTool = ref('normal');
 const emit = defineEmits(['systemStatus']);
 
 const automaticAnnotation = createAutomaticAnnotationHandler(boardingStore, annotationStore, canvasStore);
+const aiDetection = createAIDetectionHandler(imageStore, canvasStore);
 
 const centerImage = () => {
   canvasStore.centerImage();
@@ -693,6 +704,24 @@ defineExpose({
   .btn-ai:hover {
     background: var(--blue-blue2, #3E63DD);
     color: white!important;;
+  }
+
+  .btn-ai-detection {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #95F204;
+    border: 1px solid #95F20466;
+    white-space: nowrap;
+  }
+
+  .btn-ai-detection:hover:not(:disabled) {
+    background: #95F204;
+    color: #111;
+  }
+
+  .btn-ai-detection:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 
   .activeTool {

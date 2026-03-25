@@ -29,6 +29,19 @@
           </button>
         </li>
         <template v-if="item.isOpen">
+          <ul v-if="item.subImages && item.subImages.length > 0" class="sub-images-list">
+            <li
+              v-for="(subImage, subIndex) in item.subImages"
+              :key="subIndex"
+              class="sub-image-item"
+              :class="{ 'sub-image-active': imageStore.activeSubImage?.imageId === subImage.imageId }"
+              @click.stop="selectSubImage(item, subImage)"
+            >
+              <img :src="subImage.imageUrl" :alt="subImage.imageName" class="sub-image" />
+              <span class="sub-image-name">{{ subImage.imageName }}</span>
+              <span class="sub-image-index">{{ subIndex + 1 }}/{{ item.subImages.length }}</span>
+            </li>
+          </ul>
           <ul class="annotations-list">
             <li
               v-for="(data, defectValue) in groupedAnnotations(item)"
@@ -97,6 +110,7 @@
 <script setup>
 import { defineProps, defineEmits } from "vue";
 import { useAnnotationStore } from "@/stores/AnnotationsStore";
+import { useImageStore } from "@/stores/ImageStore";
 
 const props = defineProps({
   images: {
@@ -113,9 +127,10 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["selectImage", "toggleChevron", "openContextMenu"]);
+const emit = defineEmits(["selectImage", "toggleChevron", "openImageMenu", "selectSubImage"]);
 
 const annotationStore = useAnnotationStore();
+const imageStore = useImageStore();
 
 const selectImage = (image, index) => {
   emit("selectImage", image, index);
@@ -127,6 +142,10 @@ const toggleChevron = (index) => {
 
 const openImageMenu = (event, item) => {
   emit("openImageMenu", event, item);
+};
+
+const selectSubImage = (parentImage, subImage) => {
+  emit("selectSubImage", parentImage, subImage);
 };
 
 const groupedAnnotations = (item) => {
@@ -265,5 +284,49 @@ ul {
 
 .dynein-count {
   color: #737373;
+}
+
+.sub-images-list {
+  padding: 0;
+  border-left: 2px solid #3e63dd55;
+  margin-left: 8px;
+}
+
+.sub-image-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 8px;
+  border-bottom: 1px solid #212134;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.sub-image-item:hover {
+  background: #2a2a45;
+}
+
+.sub-image-active {
+  background: #1e2d4a;
+  border-left: 2px solid #3e63dd;
+}
+
+.sub-image-index {
+  font-size: 0.65rem;
+  color: #555577;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.sub-image {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.sub-image-name {
+  font-size: 0.75rem;
+  color: #aaaaaa;
 }
 </style>

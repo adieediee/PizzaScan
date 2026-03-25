@@ -62,6 +62,8 @@
         <button class="popup-btn popup-btn-accept" @click="closeAiReviewPopup">Accept</button>
       </div>
     </div>
+
+    <SubImageNavigation />
   </div>
 </template>
 
@@ -76,6 +78,7 @@ import { useWebsocketStore } from '@/stores/websocketStore';
 import Tv17 from '@/assets/images/Tv17.png';
 import ManualExplanationComponent from './Modals/ManualExplanationComponent.vue';
 import ExplanationComponent from './Modals/ExplanationComponent.vue';
+import SubImageNavigation from './SubImageNavigation.vue';
 
 const canvasStore = useCanvasStore();
 const annotationStore = useAnnotationStore();
@@ -890,6 +893,7 @@ defineExpose({
   width: 100%;
   height: 95vh;
   margin-top: 2%;
+  position: relative;
   z-index: -1;
   position: relative;
 }
