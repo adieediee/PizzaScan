@@ -29,25 +29,36 @@
           </button>
         </li>
         <template v-if="item.isOpen">
-          <ul v-if="item.subImages && item.subImages.length > 0" class="sub-images-list">
-            <li
-              v-for="(subImage, subIndex) in item.subImages"
-              :key="subIndex"
-              class="sub-image-item"
-              :class="{ 'sub-image-active': imageStore.activeSubImage?.imageId === subImage.imageId }"
-              @click.stop="selectSubImage(item, subImage)"
-            >
-              <img :src="subImage.imageUrl" :alt="subImage.imageName" class="sub-image" />
-              <span class="sub-image-name">{{ subImage.imageName }}</span>
-              <span class="sub-image-index">{{ subIndex + 1 }}/{{ item.subImages.length }}</span>
-            </li>
-          </ul>
-          <ul class="annotations-list">
-            <li
-              v-for="(data, defectValue) in groupedAnnotations(item)"
-              :key="defectValue"
-              class="annotation-item"
-            >
+          <template v-if="item.subImages && item.subImages.length > 0">
+            <!-- Collapsible sub-images sekcia -->
+            <div class="section-header" @click.stop="toggleSubImages(item.imageId)">
+              <span>Detekcie ({{ item.subImages.length }})</span>
+              <fa :icon="['fas', 'chevron-down']" :class="{ rotated: !subImagesCollapsed[item.imageId] }" />
+            </div>
+            <ul v-if="!subImagesCollapsed[item.imageId]" class="sub-images-list">
+              <li
+                v-for="(subImage, subIndex) in item.subImages"
+                :key="subIndex"
+                class="sub-image-item"
+                :class="{ 'sub-image-active': imageStore.activeSubImage?.imageId === subImage.imageId }"
+                @click.stop="selectSubImage(item, subImage)"
+              >
+                <img :src="subImage.imageUrl" :alt="subImage.imageName" class="sub-image" />
+                <span class="sub-image-name">{{ subImage.imageName }}</span>
+                <span class="sub-image-index">{{ subIndex + 1 }}/{{ item.subImages.length }}</span>
+              </li>
+            </ul>
+            <!-- Collapsible anotácie sekcia -->
+            <div class="section-header" @click.stop="toggleAnnotations(item.imageId)">
+              <span>Anotácie</span>
+              <fa :icon="['fas', 'chevron-down']" :class="{ rotated: !annotationsCollapsed[item.imageId] }" />
+            </div>
+            <ul v-if="!annotationsCollapsed[item.imageId]" class="annotations-list">
+              <li
+                v-for="(data, defectValue) in groupedAnnotations(item)"
+                :key="defectValue"
+                class="annotation-item"
+              >
               <div class="annotation-content">
                 <div class="annotation-row">
                   <span
@@ -101,6 +112,31 @@
               </div>
             </li>
           </ul>
+          </template>
+
+          <!-- Bez detekcie: pôvodné správanie -->
+          <template v-else>
+            <ul class="annotations-list">
+              <li
+                v-for="(data, defectValue) in groupedAnnotations(item)"
+                :key="defectValue"
+                class="annotation-item"
+              >
+                <div class="annotation-content">
+                  <div class="annotation-row">
+                    <span
+                      class="annotation-dot"
+                      :style="{ backgroundColor: data.color }"
+                    ></span>
+                    <div class="annotation-name-count">
+                      <span class="annotation-name">{{ data.name }}</span>
+                      <span class="shortcut">{{ data.count }}</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </template>
         </template>
       </div>
     </template>
@@ -108,7 +144,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, ref } from "vue";
 import { useAnnotationStore } from "@/stores/AnnotationsStore";
 import { useImageStore } from "@/stores/ImageStore";
 
@@ -131,6 +167,17 @@ const emit = defineEmits(["selectImage", "toggleChevron", "openImageMenu", "sele
 
 const annotationStore = useAnnotationStore();
 const imageStore = useImageStore();
+
+const subImagesCollapsed = ref({});
+const annotationsCollapsed = ref({});
+
+const toggleSubImages = (imageId) => {
+  subImagesCollapsed.value[imageId] = !subImagesCollapsed.value[imageId];
+};
+
+const toggleAnnotations = (imageId) => {
+  annotationsCollapsed.value[imageId] = !annotationsCollapsed.value[imageId];
+};
 
 const selectImage = (image, index) => {
   emit("selectImage", image, index);
@@ -284,6 +331,33 @@ ul {
 
 .dynein-count {
   color: #737373;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  font-size: 0.7rem;
+  color: #aaaaaa;
+  background: #1a1a2e;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #2a2a45;
+}
+
+.section-header:hover {
+  background: #212140;
+}
+
+.section-header .svg-inline--fa {
+  font-size: 0.6rem;
+  color: #aaaaaa;
+  transition: transform 0.2s;
+}
+
+.section-header .svg-inline--fa.rotated {
+  transform: rotate(180deg);
 }
 
 .sub-images-list {
