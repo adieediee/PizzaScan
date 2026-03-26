@@ -32,7 +32,6 @@
     >
       <div class="popup-header">
         <div class="popup-title">
-          <span class="popup-dot"></span>
           AI SUGGESTION
         </div>
         <div class="popup-confidence" :class="getConfidenceClass(aiReviewPopup.annotation.confidence)">
@@ -58,8 +57,8 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button class="popup-btn popup-btn-delete" @click="closeAiReviewPopup">Delete</button>
-        <button class="popup-btn popup-btn-accept" @click="closeAiReviewPopup">Accept</button>
+        <button class="popup-btn popup-btn-delete" @click="deleteAiAnnotation">Delete</button>
+        <button class="popup-btn popup-btn-accept" @click="acceptAiAnnotation">Accept</button>
       </div>
     </div>
 
@@ -106,6 +105,29 @@ const closeAiReviewPopup = () => {
   aiReviewPopup.value.annotation = null;
 };
 
+const acceptAiAnnotation = () => {
+  const annotation = aiReviewPopup.value.annotation;
+  if (annotation) {
+    annotation.x = (annotation.x1 + annotation.x2) / 2;
+    annotation.y = (annotation.y1 + annotation.y2) / 2;
+    annotation.type = 'manual';
+    drawImageWithPoints();
+  }
+  aiReviewPopup.value.visible = false;
+  aiReviewPopup.value.annotation = null;
+};
+
+const deleteAiAnnotation = () => {
+  const annotation = aiReviewPopup.value.annotation;
+  if (annotation) {
+    annotationStore.deleteAnnotation(annotation);
+    drawImageWithPoints();
+    imageStore.setSelectedAnnotation(null);
+  }
+  aiReviewPopup.value.visible = false;
+  aiReviewPopup.value.annotation = null;
+};
+
 const normalizeConfidence = (confidence) => {
   if (!Number.isFinite(confidence)) return null;
   const rawConfidence = confidence <= 1 ? confidence * 100 : confidence;
@@ -115,7 +137,9 @@ const normalizeConfidence = (confidence) => {
 const formatConfidence = (confidence) => {
   const confidenceValue = normalizeConfidence(confidence);
   if (confidenceValue === null) return "Unknown confidence";
-  return `${confidenceValue}% confidence`;
+  if (confidenceValue >= 80) return "AI is confident";
+  if (confidenceValue >= 50) return "Needs review";
+  return "Needs close inspection";
 };
 
 const getConfidenceClass = (confidence) => {
@@ -255,6 +279,12 @@ const handleCanvasClick = (event) => {
     canvasStore.isDragging = false;
     return;
   }
+
+  if (aiReviewPopup.value.visible) {
+    acceptAiAnnotation();
+    return;
+  }
+
   if (!canvasStore.activeAnnotation) return;
   if (!canvasStore.selectedImage) return;
   
@@ -739,8 +769,17 @@ watch(() => canvasStore.dragStartX, (newDragStartX) => {
 
 watch(() => boardingStore.manualAnnotationTutorialOn, (newState) => {});
 
+const handleDocumentClick = (e) => {
+  if (!aiReviewPopup.value.visible) return;
+  const popup = document.querySelector('.annotation-review-popup');
+  if (popup && popup.contains(e.target)) return;
+  if (canvas.value && canvas.value.contains(e.target)) return; // handled by handleCanvasClick
+  acceptAiAnnotation();
+};
+
 onMounted(() => {
   window.addEventListener('scroll', closeAiReviewPopup);
+  window.addEventListener('mousedown', handleDocumentClick);
   if (canvasStore.selectedImage) {
     drawImageOnCanvas(canvasStore.selectedImage.imageUrl);
   }
@@ -748,6 +787,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', closeAiReviewPopup);
+  window.removeEventListener('mousedown', handleDocumentClick);
 });
 
 const getMousePosition = (event) => {
@@ -986,13 +1026,12 @@ canvas {
 
 .annotation-review-popup {
   position: fixed;
-  width: 420px;
-  background: #1d2b4a;
-  border: 1px solid #2d3d60;
-  border-radius: 10px;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+  width: 320px;
+  background: #1a2540;
+  border-radius: 14px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  color: #d5dbe8;
+  color: #ffffff;
   overflow: hidden;
 }
 
@@ -1000,58 +1039,51 @@ canvas {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 22px;
-  border-bottom: 1px solid #2d3d60;
+  padding: 18px 20px 16px;
 }
 
 .popup-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-}
-
-.popup-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #2dd4bf;
+  font-size: 15px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
 .popup-confidence {
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-size: 18px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .confidence-high {
-  background: #95f204;
-  color: #101021;
+  background: #4CAF50;
+  color: #ffffff;
 }
 
 .confidence-medium {
-  background: #facc15;
-  color: #101021;
+  background: #D4920A;
+  color: #ffffff;
 }
 
 .confidence-low {
-  background: #ef4444;
+  background: #E05C3A;
   color: #ffffff;
 }
 
 .popup-body {
-  padding: 20px 22px;
-  border-bottom: 1px solid #2d3d60;
+  padding: 16px 20px 20px;
 }
 
 .popup-label {
-  font-size: 16px;
-  letter-spacing: 1px;
-  color: #a9b4c8;
-  margin-bottom: 12px;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  font-weight: 600;
+  color: #8a96b0;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 .popup-select-wrapper {
@@ -1060,13 +1092,13 @@ canvas {
 
 .popup-defect-select {
   width: 100%;
-  min-height: 44px;
-  border-radius: 10px;
-  border: 1px solid #31486f;
-  background: #152542;
+  min-height: 42px;
+  border-radius: 8px;
+  border: 1px solid #2d3d60;
+  background: #131f38;
   color: #d5dbe8;
   padding: 0 12px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   outline: none;
   cursor: pointer;
@@ -1075,25 +1107,32 @@ canvas {
 .popup-footer {
   display: flex;
   justify-content: space-between;
-  padding: 22px;
+  padding: 0 20px 20px;
+  gap: 10px;
 }
 
 .popup-btn {
+  flex: 1;
   border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 700;
   color: #ffffff;
   cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.popup-btn:hover {
+  opacity: 0.88;
 }
 
 .popup-btn-delete {
-  background: #f87171;
+  background: #f07070;
 }
 
 .popup-btn-accept {
-  background: #10b981;
+  background: #22c57a;
 }
 
 @media (max-width: 1024px) {
