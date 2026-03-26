@@ -14,9 +14,6 @@
                   <li>
                     {{$t('AItutorial.normal_cilia_only')}}
                   </li>
-                  <li>
-                    {{$t('AItutorial.dynein_not_evaluated')}}                  
-                  </li>
                 </ul>
                 <hr/>
                 <h3>{{$t('AItutorial.how_to_work')}}</h3>

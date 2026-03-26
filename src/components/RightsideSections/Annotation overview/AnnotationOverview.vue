@@ -1,7 +1,6 @@
 <template>
   <AnnotationProfile @annotationDeleted="forwardAnnotationDeleted" @zoomToAnnotation="forwardZoomToAnnotation" />
   <MicrotubularDefect @annotationUpdated="forwardAnnotationUpdated" />
-  <DyneinArms @annotationUpdated="forwardAnnotationUpdated" />
   <Parameters />
 </template>
 
@@ -9,7 +8,6 @@
 import AnnotationProfile from './AnnotationProfile.vue';
 import Parameters from './Parameters.vue';
 import MicrotubularDefect from './MicrotubularDefect.vue';
-import DyneinArms from './DyneinArms.vue';
 
 const emit = defineEmits(['annotationDeleted', 'annotationUpdated', 'zoomToAnnotation']);
 

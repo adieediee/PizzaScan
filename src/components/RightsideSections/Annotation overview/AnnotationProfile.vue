@@ -8,11 +8,6 @@
         :class="{
           'annotation-dot': imageStore.selectedAnnotation.type === 'manual',
           'annotation-square': imageStore.selectedAnnotation.type === 'AI',
-          'dyneinArms-unknown': imageStore.selectedAnnotation.dyneinArmsValue === 'unknown',
-          'dyneinArms-none': imageStore.selectedAnnotation.dyneinArmsValue === 'no-arms-missing',
-          'dyneinArms-inner': imageStore.selectedAnnotation.dyneinArmsValue === 'inner-arms-missing',
-          'dyneinArms-both': imageStore.selectedAnnotation.dyneinArmsValue === 'both-arms-missing',
-          'dyneinArms-outer': imageStore.selectedAnnotation.dyneinArmsValue === 'outer-arms-missing',
         }"
       ></div>
       <div class="buttons">

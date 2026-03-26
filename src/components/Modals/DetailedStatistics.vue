@@ -39,9 +39,6 @@
                 <div class="chart-container">
                     <Histogram id="DefectHistogram" :chartData="chartDataDefect" :chartOptions="chartOptionsDefect" />
                 </div>
-                <div class="chart-container">
-                    <Histogram id="DyneinHistogram" :chartData="chartDataDynein" :chartOptions="chartOptionsDynein" />
-                </div>
             </div>
         </div>
       </div>
@@ -60,8 +57,6 @@ const annotationsStore = useAnnotationStore();
 const statisticStore = useStatisticStore();
 
 const defects = annotationsStore.microtubularDefects;
-const dynein = annotationsStore.dyneinArms;
-
 const chartDataDefect = ref({
     labels: defects.map(defect => defect.name),
     datasets: [
@@ -69,17 +64,6 @@ const chartDataDefect = ref({
             label: 'Count',
             data: defects.map(defect => defect.count),
             backgroundColor: defects.map(defect => defect.color),
-        },
-    ],
-});
-
-const chartDataDynein = ref({
-    labels: dynein.map(defect => defect.name),
-    datasets: [
-        {
-            label: 'Count',
-            data: dynein.map(defect => defect.count),
-            backgroundColor: "#3E63DD",
         },
     ],
 });
@@ -124,47 +108,7 @@ const chartOptionsDefect = ref({
     },
 });
 
-const chartOptionsDynein = ref({
-    responsive: true,
-    plugins: {
-        legend: {
-            display: true,
-        },
-        title: {
-            display: true,
-            text: 'Dynein arms',
-            font: {
-                size: 15,
-            },
-        },
-    },
-    scales: {
-        x: {
-            ticks: {
-                font: {
-                    size: 12,
-                },
-            },
-        },
-        y: {
-            ticks: {
-                font: {
-                    size: 12,
-                },
-            },
-            beginAtZero: true,
-            title: {
-                display: true,
-                text: 'Count',
-                font: {
-                    size: 12,
-                },
-            },
-        },
-    },
-});
-
-watch(() => annotationsStore.microtubularDefects, (newDefects) => {    
+watch(() => annotationsStore.microtubularDefects, (newDefects) => {
     chartDataDefect.value = {
         labels: newDefects.map(defect => defect.name),
         datasets: [
@@ -177,25 +121,8 @@ watch(() => annotationsStore.microtubularDefects, (newDefects) => {
     };
 }, { deep: true });
 
-watch(() => annotationsStore.dyneinArms, (newDynein) => {    
-    chartDataDynein.value = {
-        labels: newDynein.map(defect => defect.name),
-        datasets: [
-            {
-                label: 'Count',
-                data: newDynein.map(defect => defect.count),
-                backgroundColor: "#3E63DD",
-            },
-        ],
-    };
-}, { deep: true });
-
 watch(() => annotationsStore.microtubularDefects, (newDefects) => {
     statisticStore.computeStatistics(newDefects, annotationsStore.dyneinArms);
-}, { deep: true });
-
-watch(() => annotationsStore.dyneinArms, (newDynein) => {
-    statisticStore.computeStatistics(annotationsStore.microtubularDefects, newDynein);
 }, { deep: true });
 
 

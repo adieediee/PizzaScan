@@ -143,10 +143,6 @@ watch(
   (newMicro) => {},
 );
 
-watch(
-  () => annotationStore.dyneinArms,
-  (newDynein) => {},
-);
 
 watch(
   () => statisticStore.total,

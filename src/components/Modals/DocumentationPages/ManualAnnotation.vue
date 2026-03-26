@@ -10,9 +10,6 @@
         <p>
             {{ $t('modals.documentation.manualTutorial.microtubularDefects') }}
         </p>
-        <p>
-            {{ $t('modals.documentation.manualTutorial.dyneinArms') }}
-        </p>
     </div>
     <div class="paragraph paragraph-last">
         <h2>{{ $t('modals.documentation.manualTutorial.title2') }}</h2>

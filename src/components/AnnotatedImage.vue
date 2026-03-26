@@ -337,12 +337,7 @@ const handleCanvasClick = (event) => {
       closeAiReviewPopup();
     }
 
-    if (clickedPoint.active) {
-      const index = annotationStore.annotations.indexOf(clickedPoint);
-      annotationStore.updateDyneinArmsOnClick(index);
-    } else {
-      annotationStore.updateAnnotationActive(clickedPoint, canvasStore.currentOpacity, canvasStore.currentSize);
-    }
+    annotationStore.updateAnnotationActive(clickedPoint, canvasStore.currentOpacity, canvasStore.currentSize);
     drawImageWithPoints();
     emit('annotationSelected', clickedPoint);
     imageStore.updateActiveTab('Annotation');
@@ -477,57 +472,9 @@ const drawImageWithPoints = (minimap = true, zooming = true) => {
 const drawPoint = (ctx, x, y, dynein_arms, color, opacity, size) => {
   ctx.beginPath();
   size = size / canvasStore.zoomScale;
-
-  const colorWithOpacity = applyOpacityToColor(color, opacity);
-  ctx.fillStyle = colorWithOpacity;
-  const blackColor = applyOpacityToColor("#000000", opacity);
-
-  const lineWidth = 5 * size / 14;
-
-  if (dynein_arms === 'unknown') {
-    ctx.arc(x, y, size, 0, 2 * Math.PI);
-    ctx.fill();
-  } else if (dynein_arms === 'both-arms-missing') {
-    ctx.arc(x, y, size, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(x - size, y - size);
-    ctx.lineTo(x + size, y + size);
-    ctx.moveTo(x + size, y - size);
-    ctx.lineTo(x - size, y + size);
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = blackColor; 
-    ctx.stroke();
-  } else if (dynein_arms === 'outer-arms-missing') {
-    ctx.arc(x, y, size, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(x - size, y);
-    ctx.lineTo(x + size, y);
-    ctx.lineWidth = lineWidth ;
-    ctx.strokeStyle = blackColor; 
-    ctx.stroke();
-  } else if (dynein_arms === 'no-arms-missing') {
-    ctx.arc(x, y, size, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(x - size - 15*size / 14, y);
-    ctx.lineTo(x + size + 15*size / 14, y);
-    ctx.lineWidth = lineWidth ;
-    ctx.strokeStyle = blackColor; 
-    ctx.stroke();
-  } else if (dynein_arms === 'inner-arms-missing') {
-    ctx.moveTo(x - size - size / 2, y);
-    ctx.lineTo(x + size + size / 2, y);
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = blackColor; 
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(x, y, size, 0, 2 * Math.PI);
-    ctx.fillStyle = colorWithOpacity;
-    ctx.fill();
-    ctx.closePath();
-  }
+  ctx.arc(x, y, size, 0, 2 * Math.PI);
+  ctx.fillStyle = applyOpacityToColor(color, opacity);
+  ctx.fill();
 };
 
 const drawAIPoint = (ctx, x1, y1, x2, y2, color, defectColor, dynein_arms, opacity, size, confidence) => {
@@ -593,43 +540,6 @@ const drawAIPoint = (ctx, x1, y1, x2, y2, color, defectColor, dynein_arms, opaci
     ctx.textRendering = "optimizeLegibility";
     ctx.fillText(confidenceLabel, Math.round(labelX + horizontalPadding), Math.round(labelY + labelHeight / 2));
     ctx.restore();
-  }
-
-  ctx.strokeStyle = "black";
-
-  if (dynein_arms === 'unknown') {
-  } else if (dynein_arms === 'both-arms-missing') {
-    ctx.beginPath();
-    ctx.moveTo(rx1, ry1);
-    ctx.lineTo(rx2, ry2);
-    ctx.moveTo(rx2, ry1);
-    ctx.lineTo(rx1, ry2);
-    ctx.lineWidth = lineWidth;
-    ctx.stroke();
-  } else if (dynein_arms === 'outer-arms-missing') {
-    ctx.beginPath();
-    ctx.moveTo(rx1, (ry1 + ry2) / 2);
-    ctx.lineTo(rx2, (ry1 + ry2) / 2);
-    ctx.lineWidth = lineWidth;
-    ctx.stroke();
-  } else if (dynein_arms === 'no-arms-missing') {
-    ctx.beginPath();
-    ctx.moveTo(rx1 - 15 * size / 14, (ry1 + ry2) / 2);
-    ctx.lineTo(rx2 + 15 * size / 14, (ry1 + ry2) / 2);
-    ctx.lineWidth = lineWidth;
-    ctx.stroke();
-  } else if (dynein_arms === 'inner-arms-missing') {
-    ctx.beginPath();
-    ctx.moveTo(rx1 - width * 0.3, (ry1 + ry2) / 2);
-    ctx.lineTo(rx1, (ry1 + ry2) / 2);
-    ctx.lineWidth = lineWidth;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(rx2, (ry1 + ry2) / 2);
-    ctx.lineTo(rx2 + width * 0.3, (ry1 + ry2) / 2);
-    ctx.lineWidth = lineWidth;
-    ctx.stroke();
   }
 
   ctx.closePath();

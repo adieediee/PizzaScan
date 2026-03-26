@@ -62,8 +62,6 @@
         <p>
             {{ $t('modals.documentation.layout.mainImageArea.annotation.add') }}
             <br>
-            {{ $t('modals.documentation.layout.mainImageArea.annotation.changeDynein') }}
-            <br>
             {{ $t('modals.documentation.layout.mainImageArea.annotation.delete') }}
             <br>
             {{ $t('modals.documentation.layout.mainImageArea.annotation.details') }}
