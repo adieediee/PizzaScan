@@ -43,6 +43,7 @@
     <Documentation />
     <Settings />
     <UserFeedback @systemStatus="handleStatusMessage" />
+    <ReportProblemModal />
     <ExportModal @systemStatus="handleStatusMessage" />
     <ImageDeletion @systemStatus="handleStatusMessage" />
     <ImageAnnotationDeletion @systemStatus="handleStatusMessage" />
@@ -73,6 +74,7 @@ import DetailedStatistics from './components/Modals/DetailedStatistics.vue';
 import Documentation from './components/Modals/Documentation.vue';
 import Settings from './components/Modals/Settings.vue';
 import UserFeedback from './components/Modals/UserFeedback.vue';
+import ReportProblemModal from './components/Modals/ReportProblemModal.vue';
 import ExportModal from './components/Modals/ConfirmModals/ExportModal.vue';
 import ImageDeletion from './components/Modals/ConfirmModals/ImageDeletion.vue';
 import ImageAnnotationDeletion from './components/Modals/ConfirmModals/ImageAnnotationDeletion.vue';

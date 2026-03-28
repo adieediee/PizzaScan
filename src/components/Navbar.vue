@@ -29,7 +29,8 @@
           id="ai-detection-button"
           class="btn btn-icon btn-ai-detection"
           @click="aiDetection"
-          :disabled="!boardingStore.wholeTutorialSeen || !canvasStore.selectedImage">
+          :disabled="!boardingStore.wholeTutorialSeen || !canvasStore.selectedImage"
+          :class="{ 'highlighted': boardingStore.currentStep === 2 }">
             AI Detection
             <span v-if="!boardingStore.explainNav" class="tooltip">Run AI pizza detection</span>
         </button>
@@ -243,6 +244,19 @@
             </ul>
         </button>
       </div>
+      <div>
+        <button
+          id="report-problem-button"
+          type="button"
+          class="btn btn-report-problem"
+          data-button="reportProblemButton"
+          @click="openReportProblemModal"
+          :disabled="!boardingStore.wholeTutorialSeen"
+        >
+          <fa :icon="['fas', 'exclamation-triangle']" class="report-problem-icon" />
+          {{ $t('navigation.reportProblem') }}
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -317,6 +331,10 @@ const openDocumentationModal = () => {
 
 const openFeedbackModal = () => {
   modalStore.openModal('feedback')
+};
+
+const openReportProblemModal = () => {
+  modalStore.openModal('reportProblem');
 };
 
 const addNewClass = () => {
@@ -724,6 +742,13 @@ defineExpose({
     cursor: not-allowed;
   }
 
+  /* Tutorial step 2: match AI button prominence (disabled otherwise fades AI Detection to 40%) */
+  .btn-ai-detection.highlighted {
+    opacity: 1 !important;
+    border-color: #3e63dd !important;
+    color: #fff !important;
+  }
+
   .activeTool {
     background: var(--blue-blue2, #3E63DD);
   }
@@ -764,6 +789,26 @@ defineExpose({
   .shortcut-tooltip {
     margin-left: 5px;
     font-size: smaller;
+  }
+
+  .btn-report-problem {
+    border: 1px solid var(--blue-blue3, #3e63dd);
+    border-radius: 999px;
+    padding: 6px 14px;
+    gap: 8px;
+    color: var(--blue-blue3, #3e63dd) !important;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  .btn-report-problem:hover:not(:disabled) {
+    background: rgba(62, 99, 221, 0.12);
+    color: var(--blue-blue3, #3e63dd) !important;
+  }
+
+  .btn-report-problem .report-problem-icon {
+    font-size: 0.9rem;
   }
 
 </style>

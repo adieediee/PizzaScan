@@ -15,7 +15,7 @@
         "tooltips": {
             "ai": "Automatická anotace",
             "centerImage": "Vycentrovat snímek",
-            "chooseMicrotubularDefect": "Vybrat mikrotubulární defekt",
+            "chooseMicrotubularDefect": "Vybrat defekt nebo kategorii",
             "changeOpacity": "Změnit průhlednost bodu",
             "changePointSize": "Změnit velikost bodu",
             "settings": "Nastavení",
@@ -25,7 +25,8 @@
             "settings": "Nastavení",
             "documentation": "Dokumentace",
             "userFeedback": "Zpětná vazba"
-        }
+        },
+        "reportProblem": "Nahlásit problém"
     },
     "leftSidebar": {
         "search": "Vyhledat snímek",
@@ -180,6 +181,15 @@
                 "answer1": "Vůbec nesouhlasím",
                 "answer10": "Zcela souhlasím"
             }
+        },
+        "reportProblem": {
+            "title": "Nahlásit problém",
+            "intro": "Narazili jste na problém? Nahlaste ho zde a popište ho co nejpodrobněji.",
+            "placeholder": "Popište, co se stalo...",
+            "send": "Odeslat",
+            "thanksTitle": "Děkujeme za vaši zpětnou vazbu",
+            "thanksBody": "Projdeme ji a využijeme ji ke zlepšení aplikace v budoucnu.",
+            "goBack": "Zpět"
         },
         "documentation": {
             "title": "Dokumentace",
@@ -349,26 +359,26 @@
     "layoutTutorial": {
         "title": "Rozložení aplikace",
         "steps": "z 8 kroků",
-        "step1": "Vítejte v tutoriálu! Tento průvodce vás provede rozložením aplikace.",
-        "step2": "Toto tlačítko slouží k automatickému anotování obrázku.",
-        "step3": "Tato tlačítka vám umožní pracovat s obrázkem: vycentrovat ho nebo vrátit poslední akci.",
-        "step4": "Použijte tato tlačítka k výběru mikrotrubulárního defektu a úpravě velikosti a průhlednosti bodů.",
-        "step5": "Levý panel zobrazuje vaše obrázky a jejich anotace.",
-        "step6": "Toto je pracovní prostor, kde můžete přidávat, upravovat nebo mazat anotace na obrázku.",
-        "step7": "Pravý panel obsahuje záložky s přehledy projektu, obrázku a anotací. Mezi nimi můžete přepínat kliknutím na záložku.",
-        "step8": "Podrobnější informace o aplikaci naleznete v Dokumentaci."
+        "step1": "Vítejte v tutoriálu! Tento průvodce představí hlavní části PizzaScan: horní lištu, boční panely a pracovní plochu.",
+        "step2": "Použijte tlačítko AI pro automatickou anotaci obrázku a tlačítko AI Detection pro detekci pizzy na obrázku a rozdělení do samostatných obrázků.",
+        "step3": "Použijte tlačítko pro vycentrování obrázku, aby byla pizza v záběru, a tlačítko Zpět pro vrácení poslední změny.",
+        "step4": "Použijte tyto ovládací prvky k výběru defektu nebo kategorie pro anotace a k úpravě velikosti a průhlednosti bodů, aby byly značky na pizzě dobře vidět.",
+        "step5": "V levém panelu je seznam obrázků; obrázek můžete rozbalit a pod ním uvidíte jeho anotace.",
+        "step6": "Střed obrazovky je pracovní plocha: kontrolujte pizzu, přidávejte nebo upravujte anotace a přibližujte nebo posouvejte pohled podle potřeby.",
+        "step7": "V pravém panelu jsou záložky Projekt, Obrázek a Anotace s přehledy a detaily. Přepínejte mezi nimi kliknutím na záložku.",
+        "step8": "Další informace o nástrojích a rozložení najdete v Dokumentaci v menu."
     },
     "manualAnnotationTutorial": {
         "title": "Manuální anotace",
         "steps": "z 8 kroků",
-        "step1": "Tento průvodce vás provede procesem manuální anotace.",
-        "step2": "Vyberte obrázek z levého panelu.",
-        "step3": "V navigaci vyberte kategorii defektu kliknutím na tlačítko \"Vybrat mikrotrubulární defekt\". Typy můžete také měnit pomocí číselných kláves.",
-        "step4": "Kliknutím na obrázek přidejte anotaci.",
-        "step5": "Opakovaným klikaním na anotaci změňte typ dyneinových ramének.",
-        "step6": "Potřebujete upravit anotaci? Klikněte na \"Mikrotrubulární defekt\" nebo \"Dyneinové raménka\" v záložce \"Anotace\" v pravém panelu.",
-        "step7": "Potřebujete smazat anotaci? Pravým kliknutím na ni! Nebo ji smažte v záložce \"Anotace\" v pravém panelu.",
-        "step8": "Pokud jste něco zapomněli, podívejte se do Dokumentace."
+        "step1": "Tento krátký průvodce vás provede manuální anotací na obrázcích pizzy.",
+        "step2": "Vyberte obrázek v levém panelu, aby se otevřel.",
+        "step3": "Zvolte defekt nebo kategorii v horní liště (barevný výběr). Kategorie přepínejte číselnými klávesami.",
+        "step4": "Kliknutím na obrázek pizzy přidejte anotaci.",
+        "step5": "Na stejný obrázek pizzy můžete přidat více než jednu anotaci.",
+        "step6": "Chcete anotaci upravit? Vyberte ji a v záložce Anotace v pravém panelu změňte kategorii defektu a související pole.",
+        "step7": "Chcete anotaci smazat? Použijte pravé tlačítko myši, nebo ji odeberte v záložce Anotace v pravém panelu.",
+        "step8": "Potřebujete si něco připomenout? Otevřete Dokumentaci v menu."
     },
     "AItutorial": {
         "title": "Automatická anotace",
