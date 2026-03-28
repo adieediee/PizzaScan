@@ -412,6 +412,21 @@ export const useAnnotationStore = defineStore("annotation", {
       }
     },
 
+    acceptAllAIAnnotations(imageId) {
+      const aiAnnotations = this.annotations.filter(
+        (annotation) => annotation.imageId === imageId && annotation.type === "AI",
+      );
+
+      aiAnnotations.forEach((annotation) => {
+        annotation.x = (annotation.x1 + annotation.x2) / 2;
+        annotation.y = (annotation.y1 + annotation.y2) / 2;
+        annotation.type = "manual";
+      });
+
+      useStatisticStore().computeStatistics(this.microtubularDefects, this.dyneinArms);
+      useLoggingStore().logEvent({ Action: "All AI annotations accepted", Count: aiAnnotations.length });
+    },
+
     updateAllAnnotationOpacities(opacity) {
       this.annotations.forEach((annotation) => {
         annotation.opacity = opacity;
