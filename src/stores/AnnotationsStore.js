@@ -26,8 +26,15 @@ export const useAnnotationStore = defineStore("annotation", {
       },
       {
         name: "Missing center salami",
-        value: "missing-center",
+        value: "missing-center-salami",
         color: "#D9001B",
+        count: 0,
+        description: "",
+      },
+      {
+        name: "Only one center salami",
+        value: "one-center-salami",
+        color: "#FF6B35",
         count: 0,
         description: "",
       },
@@ -403,6 +410,24 @@ export const useAnnotationStore = defineStore("annotation", {
           useImageStore().updateActiveTab("Image");
         }
       }
+    },
+
+    acceptAllAIAnnotations(imageId) {
+      const aiAnnotations = this.annotations.filter(
+        (annotation) => annotation.imageId === imageId && annotation.type === "AI",
+      );
+
+      aiAnnotations.forEach((annotation) => {
+        annotation.x = (annotation.x1 + annotation.x2) / 2;
+        annotation.y = (annotation.y1 + annotation.y2) / 2;
+        annotation.type = "manual";
+      });
+
+      const image = useImageStore().uploadedImages.find((img) => img.imageId === imageId);
+      if (image) image.aiAnnotated = true;
+
+      useStatisticStore().computeStatistics(this.microtubularDefects, this.dyneinArms);
+      useLoggingStore().logEvent({ Action: "All AI annotations accepted", Count: aiAnnotations.length });
     },
 
     updateAllAnnotationOpacities(opacity) {

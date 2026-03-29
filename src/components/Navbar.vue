@@ -4,6 +4,64 @@
        <img :src="Logo" alt="logo" class="logo" />
     </div>
     <div class="navbar-middle">
+      <div class="toolbar-pill">
+
+        <!-- AI filter button -->
+        <div class="toolbar-item" style="position: relative;">
+          <button
+            id="automatic-annotation-button"
+            class="btn tb-btn tb-btn-ai"
+            data-button="AI-button"
+            @click.stop="handleAiButtonClick"
+            :disabled="!boardingStore.wholeTutorialSeen"
+            :class="{ 'highlighted': boardingStore.currentStep === 2, 'tb-btn-active': aiFilterOpen }">
+            <span class="tb-ai-label">AI</span>
+            <template v-if="hasAIAnnotations">
+              <span
+                v-for="dot in aiFilterDots"
+                :key="dot.color"
+                class="ai-filter-dot"
+                :style="{ backgroundColor: dot.color }"
+              ></span>
+              <fa :icon="['fas', 'chevron-down']" class="tb-chevron" :class="{ 'tb-chevron-up': aiFilterOpen }" />
+            </template>
+          </button>
+          <div v-show="aiFilterOpen" class="ai-filter-dropdown" ref="aiFilterModal" @click.stop>
+            <div
+              class="ai-filter-item"
+              :style="aiFilterItemStyle('#E05C3A', canvasStore.aiVisibilityFilter.showInspection)"
+              @click="canvasStore.aiVisibilityFilter.showInspection = !canvasStore.aiVisibilityFilter.showInspection">
+              <span class="ai-filter-check">{{ canvasStore.aiVisibilityFilter.showInspection ? '✓' : '' }}</span>
+              Needs Inspection
+            </div>
+            <div
+              class="ai-filter-item"
+              :style="aiFilterItemStyle('#D4920A', canvasStore.aiVisibilityFilter.showReview)"
+              @click="canvasStore.aiVisibilityFilter.showReview = !canvasStore.aiVisibilityFilter.showReview">
+              <span class="ai-filter-check">{{ canvasStore.aiVisibilityFilter.showReview ? '✓' : '' }}</span>
+              Needs Review
+            </div>
+            <div
+              class="ai-filter-item"
+              :style="aiFilterItemStyle('#4CAF50', canvasStore.aiVisibilityFilter.showConfident)"
+              @click="canvasStore.aiVisibilityFilter.showConfident = !canvasStore.aiVisibilityFilter.showConfident">
+              <span class="ai-filter-check">{{ canvasStore.aiVisibilityFilter.showConfident ? '✓' : '' }}</span>
+              AI is confident
+            </div>
+          </div>
+          <ExplanationComponent v-if="boardingStore.currentStep === 1" :text="$t('layoutTutorial.step1')" />
+          <ExplanationComponent v-if="boardingStore.currentStep === 2" :text="$t('layoutTutorial.step2')" />
+        </div>
+
+        <!-- AI Detection -->
+        <div class="toolbar-item">
+          <button
+            id="ai-detection-button"
+            class="btn tb-btn tb-btn-detect"
+            @click="aiDetection"
+            :disabled="!boardingStore.wholeTutorialSeen || !canvasStore.selectedImage">
+            <fa :icon="['fas', 'wand-magic-sparkles']" />
+            <span class="tb-label">Detect</span>
       <div>
         <button
           id="automatic-annotation-button"
@@ -33,150 +91,135 @@
           :class="{ 'highlighted': boardingStore.currentStep === 2 }">
             AI Detection
             <span v-if="!boardingStore.explainNav" class="tooltip">Run AI pizza detection</span>
-        </button>
-      </div>
-      <div class="tools-for-image">
-        <div>
-          <button 
+          </button>
+        </div>
+
+        <div class="toolbar-sep"></div>
+
+        <!-- Center image -->
+        <div class="toolbar-item">
+          <button
             id="center-image-button"
-            class="btn btn-icon" 
-            data-button="centerImageButton" 
+            class="btn tb-btn"
+            data-button="centerImageButton"
             @click="centerImage"
             :disabled="!boardingStore.wholeTutorialSeen"
             :class="{ 'highlighted': boardingStore.currentStep === 3 }">
-              <fa :icon="['fas', 'expand']" />
-              <span v-if="!boardingStore.explainNav" class="tooltip">
-                {{$t('navigation.tooltips.centerImage')}}
-                <span class="shortcut shortcut-tooltip">CTRL + I</span>
-              </span>
+            <fa :icon="['fas', 'expand']" />
+            <span v-if="!boardingStore.explainNav" class="tooltip">
+              {{$t('navigation.tooltips.centerImage')}}
+              <span class="shortcut shortcut-tooltip">CTRL + I</span>
+            </span>
           </button>
         </div>
-        <div>
-          <button 
+
+        <!-- Undo -->
+        <div class="toolbar-item">
+          <button
             id="undo-button"
-            class="btn btn-icon" 
-            data-button="undoButton" 
-            @click="undoLastStep" 
+            class="btn tb-btn"
+            data-button="undoButton"
+            @click="undoLastStep"
             :disabled="!boardingStore.wholeTutorialSeen || !canUndo"
             :class="{ 'highlighted': boardingStore.currentStep === 3 }">
-              <fa :icon="['fas', 'rotate-left']" />
-              <span v-if="!boardingStore.explainNav" class="tooltip">
-                {{$t('navigation.tooltips.undo')}}
-                <span class="shortcut shortcut-tooltip">CTRL + Z</span>
-              </span>
+            <fa :icon="['fas', 'rotate-left']" />
+            <span v-if="!boardingStore.explainNav" class="tooltip">
+              {{$t('navigation.tooltips.undo')}}
+              <span class="shortcut shortcut-tooltip">CTRL + Z</span>
+            </span>
           </button>
           <ExplanationComponent
             v-if="boardingStore.showLayoutTutorial && boardingStore.currentStep === 3"
             :text="$t('layoutTutorial.step3')"
           />
         </div>
-      </div>
-      
-      <div>
-        <button 
-          id="mtds-tool-btn"
-          data-button="microtubularDefectsButton" 
-          class="btn" 
-          @click="toggleMicrotubularDefects"
-          :disabled="!boardingStore.wholeTutorialSeen"
-          :class="{ 'highlighted': boardingStore.currentStep === 4 }">
-          <span class="defect-name"
-            :style="{ 
-              color: selectedMicrotubularDefectColor, 
-              backgroundColor: selectedMicrotubularDefectColor + '40'
-            }">
-            {{ selectedMicrotubularDefectName }}
-          </span>
-          <span v-if="!boardingStore.explainNav && !microtubularDefectsOpen" class="tooltip">{{$t('navigation.tooltips.chooseMicrotubularDefect')}}</span>
-          <ul v-if="microtubularDefectsOpen" class="dropdown-content">
-            <div class="scrollable-list">
-              <li 
-                v-for="tool in annotationStore.microtubularDefects" 
-                :key="tool.value"
-                :class="{ active: selectedTool === tool.value }"
-                @click="setMicrotubularDefect(tool.value)">
-                <span class="defect-name dafect-name-list" :style="{ color: tool.color, backgroundColor: tool.color + '40'}">
-                  {{ tool.name }}
-                </span>
-                <span class="shortcut">{{ getShortcut(tool.value).value }}</span>
-              </li>
-            </div>
-            <li class="add-new-class" @click="addNewClass">
-              <fa :icon="['fas', 'circle-plus']" />
-              {{$t('annotation.addNewClass')}}
-              <span class="shortcut">CTRL + A</span>
-            </li>
-          </ul>
-        </button>
-      </div>
 
-      <div>
-        <button 
-          id="opacity-button"
-          class="btn btn-icon" 
-          data-button="opacityButton" 
-          @click="toggleOpacity($event)" 
-          :disabled="!boardingStore.wholeTutorialSeen"
-          :class="{ 'highlighted': boardingStore.currentStep === 4 }">
+        <div class="toolbar-sep"></div>
+
+        <!-- Defect type selector -->
+        <div class="toolbar-item">
+          <button
+            id="mtds-tool-btn"
+            data-button="microtubularDefectsButton"
+            class="btn tb-btn tb-btn-defect"
+            @click="toggleMicrotubularDefects"
+            :disabled="!boardingStore.wholeTutorialSeen"
+            :class="{ 'highlighted': boardingStore.currentStep === 4 }">
+            <span class="defect-name"
+              :style="{
+                color: selectedMicrotubularDefectColor,
+                backgroundColor: selectedMicrotubularDefectColor + '25'
+              }">
+              {{ selectedMicrotubularDefectName }}
+            </span>
+            <fa :icon="['fas', 'chevron-down']" class="tb-chevron" :class="{ 'tb-chevron-up': microtubularDefectsOpen }" />
+            <span v-if="!boardingStore.explainNav && !microtubularDefectsOpen" class="tooltip">{{$t('navigation.tooltips.chooseMicrotubularDefect')}}</span>
+            <ul v-if="microtubularDefectsOpen" class="dropdown-content">
+              <div class="scrollable-list">
+                <li
+                  v-for="tool in annotationStore.microtubularDefects"
+                  :key="tool.value"
+                  :class="{ active: selectedTool === tool.value }"
+                  @click="setMicrotubularDefect(tool.value)">
+                  <span class="defect-name dafect-name-list" :style="{ color: tool.color, backgroundColor: tool.color + '40'}">
+                    {{ tool.name }}
+                  </span>
+                  <span class="shortcut">{{ getShortcut(tool.value).value }}</span>
+                </li>
+              </div>
+              <li class="add-new-class" @click="addNewClass">
+                <fa :icon="['fas', 'circle-plus']" />
+                {{$t('annotation.addNewClass')}}
+                <span class="shortcut">CTRL + A</span>
+              </li>
+            </ul>
+          </button>
+        </div>
+
+        <div class="toolbar-sep"></div>
+
+        <!-- Opacity -->
+        <div class="toolbar-item">
+          <button
+            id="opacity-button"
+            class="btn tb-btn"
+            data-button="opacityButton"
+            @click="toggleOpacity($event)"
+            :disabled="!boardingStore.wholeTutorialSeen"
+            :class="{ 'highlighted': boardingStore.currentStep === 4, 'tb-btn-active': opacityOpen }">
             <fa :icon="['fas', 'circle-half-stroke']" />
             <span v-if="!boardingStore.explainNav && !opacityOpen" class="tooltip">{{$t('navigation.tooltips.changeOpacity')}}</span>
             <div v-if="opacityOpen" class="opacity-modal" ref="opacityModal">
               <div class="opacity-input">
                 <p>Opacity:</p>
-                <input 
-                  type="number" 
-                  v-model="sliderValue" 
-                  class="slider-value-input" 
-                  min="0" 
-                  max="100"
-                  @input="updateOpacity(sliderValue)"
-                  @click.stop
-                />
+                <input type="number" v-model="sliderValue" class="slider-value-input" min="0" max="100"
+                  @input="updateOpacity(sliderValue)" @click.stop />
               </div>
-              <input 
-                class="slider" 
-                type="range" 
-                id="slider" 
-                min="0" 
-                max="100" 
-                v-model="sliderValue"
-                @input="updateOpacity(sliderValue)"
-              />
+              <input class="slider" type="range" min="0" max="100" v-model="sliderValue"
+                @input="updateOpacity(sliderValue)" />
             </div>
-        </button>
-      </div>
-      <div>
-        <button 
-          id="point-size-button"
-          class="btn btn-icon" 
-          data-button="pointSizeButton" 
-          @click="togglePointSize($event)" 
-          :disabled="!boardingStore.wholeTutorialSeen"
-          :class="{ 'highlighted': boardingStore.currentStep === 4 }">
+          </button>
+        </div>
+
+        <!-- Point size -->
+        <div class="toolbar-item">
+          <button
+            id="point-size-button"
+            class="btn tb-btn"
+            data-button="pointSizeButton"
+            @click="togglePointSize($event)"
+            :disabled="!boardingStore.wholeTutorialSeen"
+            :class="{ 'highlighted': boardingStore.currentStep === 4, 'tb-btn-active': pointSizeOpen }">
             <fa :icon="['fas', 'circle-dot']" />
             <span v-if="!boardingStore.explainNav && !pointSizeOpen" class="tooltip">{{$t('navigation.tooltips.changePointSize')}}</span>
             <div v-if="pointSizeOpen" class="opacity-modal" ref="pointSizeModal">
               <div class="opacity-input">
                 <p>Point size:</p>
-                <input 
-                  type="number" 
-                  v-model="pointValue" 
-                  class="slider-value-input" 
-                  min="5" 
-                  max="25"
-                  @input="updatePointSize(pointValue)"
-                  @click.stop
-                />
+                <input type="number" v-model="pointValue" class="slider-value-input" min="5" max="25"
+                  @input="updatePointSize(pointValue)" @click.stop />
               </div>
-              <input 
-                class="slider" 
-                type="range" 
-                id="slider" 
-                min="5" 
-                max="25"
-                @input="updatePointSize(pointValue)" 
-                v-model="pointValue"
-              />
+              <input class="slider" type="range" min="5" max="25" v-model="pointValue"
+                @input="updatePointSize(pointValue)" />
             </div>
         </button>
         <ExplanationComponent
@@ -292,12 +335,45 @@ const statisticStore = useStatisticStore();
 const settingsOpen = ref(false);
 const opacityOpen = ref(false);
 const pointSizeOpen = ref(false);
+const aiFilterOpen = ref(false);
 const sliderValue = ref(canvasStore.currentOpacity);
 const pointValue = ref(canvasStore.currentSize);
 const opacityModal = ref(null);
 const pointSizeModal = ref(null);
+const aiFilterModal = ref(null);
 const microtubularDefectsOpen = ref(false);
 const selectedTool = ref('normal');
+
+const hasAIAnnotations = computed(() => {
+  if (!canvasStore.selectedImage) return false;
+  return !!canvasStore.selectedImage.aiAnnotated ||
+    annotationStore.annotations.some(
+      (a) => a.imageId === canvasStore.selectedImage.imageId && a.type === 'AI'
+    );
+});
+
+const handleAiButtonClick = () => {
+  if (hasAIAnnotations.value) {
+    aiFilterOpen.value = !aiFilterOpen.value;
+    opacityOpen.value = false;
+    pointSizeOpen.value = false;
+  } else {
+    automaticAnnotation();
+  }
+};
+
+const aiFilterDots = computed(() => {
+  const dots = [];
+  if (canvasStore.aiVisibilityFilter.showInspection) dots.push({ color: '#E05C3A' });
+  if (canvasStore.aiVisibilityFilter.showReview) dots.push({ color: '#D4920A' });
+  if (canvasStore.aiVisibilityFilter.showConfident) dots.push({ color: '#4CAF50' });
+  return dots;
+});
+
+const aiFilterItemStyle = (color, active) => ({
+  color: active ? color : '#555',
+  backgroundColor: active ? color + '44' : '#1a1a2e',
+});
 
 const emit = defineEmits(['systemStatus']);
 
@@ -393,6 +469,9 @@ onMounted(() => {
     }
     if (pointSizeOpen.value && pointSizeModal.value && !pointSizeModal.value.contains(event.target)) {
       pointSizeOpen.value = false;
+    }
+    if (aiFilterOpen.value && aiFilterModal.value && !aiFilterModal.value.contains(event.target)) {
+      aiFilterOpen.value = false;
     }
   });
 });
@@ -619,14 +698,14 @@ defineExpose({
     position: fixed;
     top: 0;
     left: 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 18px 21px 18px 15px;
+    padding: 10px 20px;
     flex-shrink: 0;
-    border-top: 1px solid var(--dark-dark3, #2D2D42);
-    border-bottom: 1px solid var(--dark-dark3, #2D2D42);
     background: var(--dark-dark1, #101021);
+    border-bottom: 1px solid #1e1e32;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    z-index: 10;
   }
-  
+
   .navbar-left,
   .navbar-right,
   .navbar-middle {
@@ -638,108 +717,225 @@ defineExpose({
     width: 15%;
   }
 
-  .tools-for-image {
+  .logo {
+    width: 30%;
+  }
+
+  /* ── Toolbar pill ── */
+  .toolbar-pill {
     display: flex;
     align-items: center;
-    border-left: #2D2D42 solid 1px;
-    border-right: #2D2D42 solid 1px;
+    gap: 2px;
+    background: #16162a;
+    border: 1px solid #2a2a40;
+    border-radius: 12px;
+    padding: 4px 6px;
   }
-  
+
+  .toolbar-item {
+    position: relative;
+  }
+
+  .toolbar-sep {
+    width: 1px;
+    height: 22px;
+    background: #2a2a40;
+    margin: 0 4px;
+    flex-shrink: 0;
+  }
+
+  /* ── Base toolbar button ── */
+  .tb-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 34px;
+    min-width: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #a0a0c0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+
+  .tb-btn:hover:not(:disabled) {
+    background: #222238;
+    color: #e0e0ff;
+  }
+
+  .tb-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .tb-btn-active,
+  .tb-btn-active:hover {
+    background: #1e2d5a;
+    color: #7aacff;
+  }
+
+  .tb-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .tb-chevron {
+    font-size: 0.6rem;
+    opacity: 0.6;
+    transition: transform 0.2s;
+  }
+
+  .tb-chevron-up {
+    transform: rotate(180deg);
+  }
+
+  /* ── AI button ── */
+  .tb-btn-ai {
+    width: 90px;
+    justify-content: flex-start;
+    gap: 5px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #7aacff;
+    border: 1px solid #2a3a60;
+  }
+
+  .tb-btn-ai:hover:not(:disabled) {
+    background: #1e2d5a;
+    border-color: #4a6aaa;
+    color: #a0c8ff;
+  }
+
+  .tb-ai-label {
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+
+  .ai-filter-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── AI Detect button ── */
+  .tb-btn-detect {
+    color: #95F204;
+    border: 1px solid #3a5010;
+  }
+
+  .tb-btn-detect:hover:not(:disabled) {
+    background: #1e2e08;
+    color: #b0f040;
+    border-color: #6a8020;
+  }
+
+  .tb-btn-detect:disabled {
+    opacity: 0.3;
+  }
+
+  /* ── Defect selector ── */
+  .tb-btn-defect {
+    min-width: 110px;
+    justify-content: space-between;
+    padding: 0 8px;
+  }
+
+  /* ── Dropdowns ── */
   .dropdown-content, .opacity-modal {
-    position: fixed;
-    top: 100%;
+    position: absolute;
+    top: calc(100% + 6px);
     left: 0;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-    z-index: 1;
-    padding: 5px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    z-index: 200;
+    padding: 6px;
     margin: 0;
     list-style-type: none;
-    background: var(--dark-dark1, #101021);
+    background: #16162a;
+    border: 1px solid #2a2a40;
     color: white;
-    border-radius: 0 0 15px 15px;
+    border-radius: 10px;
+    min-width: 180px;
   }
-  
+
   .dropdown-content li {
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 5px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    gap: 6px;
   }
 
   .dropdown-content li:hover {
-    background: var(--dark-dark2, #202030);
+    background: #222238;
   }
-  
+
+  .dropdown-content li.active {
+    background: #1e2d5a;
+  }
+
   .dropdown-content span {
     width: max-content;
   }
 
   .scrollable-list {
-    max-height: 500px;
+    max-height: 400px;
     overflow-y: auto;
   }
 
   .scrollable-list::-webkit-scrollbar,
   .dropdown-content::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
   }
 
   .scrollable-list::-webkit-scrollbar-thumb,
   .dropdown-content::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #3a3a5a;
     border-radius: 4px;
   }
 
-  .scrollable-list::-webkit-scrollbar-thumb:hover,
-  .dropdown-content::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-
   .opacity-modal {
-    width: max-content;
-    padding-inline: 5px;
+    width: 180px;
+    padding: 10px 12px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .slider {
-    width: 120px;
+    width: 100%;
     padding: 0;
-    margin: 0;
+    margin: 4px 0 0 0;
   }
 
   .slider-value-input {
     text-align: center;
-    padding: 10px;
-    width: 45%;
-    margin: 10px 0;
+    padding: 4px 6px;
+    width: 52px;
+    background: #222238;
+    border: 1px solid #3a3a5a;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.85rem;
   }
 
   .opacity-input {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 0.82rem;
+    color: #a0a0c0;
+    gap: 8px;
   }
 
-  .btn-ai:hover {
-    background: var(--blue-blue2, #3E63DD);
-    color: white!important;;
-  }
-
-  .btn-ai-detection {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #95F204;
-    border: 1px solid #95F20466;
-    white-space: nowrap;
-  }
-
-  .btn-ai-detection:hover:not(:disabled) {
-    background: #95F204;
-    color: #111;
-  }
-
-  .btn-ai-detection:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+  .opacity-input p {
+    margin: 0;
   }
 
   /* Tutorial step 2: match AI button prominence (disabled otherwise fades AI Detection to 40%) */
@@ -750,40 +946,44 @@ defineExpose({
   }
 
   .activeTool {
-    background: var(--blue-blue2, #3E63DD);
+    background: #1e2d5a;
   }
 
   .dropdown-settings {
     right: 0;
     left: auto;
-    width: max-content;
+    min-width: 160px;
   }
 
   .dropdown-settings li {
     cursor: pointer;
   }
 
-  .logo {
-    width: 30%;
-  }
-
   .add-new-class {
     gap: 8px;
-    margin: 5px;
-    border-top: #2D2D42 solid 1px;
+    margin: 4px 0 0 0;
+    padding-top: 8px !important;
+    border-top: 1px solid #2a2a40;
+    color: #7a7aaa;
+    font-size: 0.8rem;
+  }
+
+  .add-new-class:hover {
+    color: #e0e0ff !important;
   }
 
   .dafect-name-list {
-    margin-right: 10px;
+    margin-right: 8px;
   }
 
   .shortcut {
     font-family: monospace;
     margin-left: auto;
-    background: #212134;
-    color: #737379;
-    padding: 5px;
-    border-radius: 15px;
+    background: #1a1a2e;
+    color: #5a5a7a;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
   }
 
   .shortcut-tooltip {
@@ -791,6 +991,94 @@ defineExpose({
     font-size: smaller;
   }
 
+  /* ── AI filter dropdown ── */
+  .ai-filter-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 160px;
+    background: #16162a;
+    border: 1px solid #2a2a40;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    z-index: 200;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ai-filter-item {
+    cursor: pointer;
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: filter 0.12s;
+  }
+
+  .ai-filter-check {
+    width: 14px;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .ai-filter-item:hover {
+    filter: brightness(1.2);
+  }
+
+  /* ── Right side buttons ── */
+  .navbar-right {
+    gap: 6px;
+  }
+
+  .navbar-right .btn-outlined {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid #2a2a40;
+    color: #a0a0c0;
+    background: transparent;
+  }
+
+  .navbar-right .btn-outlined:hover:not(:disabled) {
+    background: #222238;
+    color: #e0e0ff;
+    border-color: #4a4a6a;
+  }
+
+  .navbar-right .btn-filled {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: #3E63DD;
+    color: white;
+    border: none;
+    font-weight: 600;
+  }
+
+  .navbar-right .btn-filled:hover:not(:disabled) {
+    background: #5577ee;
+  }
+
+  .navbar-right .btn-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: #a0a0c0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navbar-right .btn-icon:hover:not(:disabled) {
+    background: #222238;
+    color: #e0e0ff;
   .btn-report-problem {
     border: 1px solid var(--blue-blue3, #3e63dd);
     border-radius: 999px;
