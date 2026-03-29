@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useAnnotationStore } from './AnnotationsStore';
 
 export const useBoardingStore = defineStore('boarding', {
   state: () => ({
@@ -16,6 +17,7 @@ export const useBoardingStore = defineStore('boarding', {
 
     automaticAnnotationTutorialOn: false,
     automaticAnnotationTutorialSeen: false,
+    aiCurrentStep: 1,
   }),
 
   getters: {
@@ -111,12 +113,21 @@ export const useBoardingStore = defineStore('boarding', {
 
     setAutomaticAnnotationTutorialOn() {
       this.automaticAnnotationTutorialOn = true;
+      this.aiCurrentStep = 1;
     },
 
     setAutomaticAnnotationTutorialOff() {
       this.automaticAnnotationTutorialOn = false;
       this.automaticAnnotationTutorialSeen = true;
       this.save();
+    },
+
+    setAiCurrentStep(step) {
+      this.aiCurrentStep = step;
+      if (this.aiCurrentStep >= 6) {
+        this.setAutomaticAnnotationTutorialOff();
+        useAnnotationStore().automaticAnnotation();
+      }
     },
 
     setWelcome() {

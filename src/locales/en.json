@@ -380,14 +380,13 @@
         "step7": "To delete an annotation, right-click it, or remove it in the Annotation tab on the right."
     },
     "AItutorial": {
-        "title": "Automatic anotation",
-        "ai_helping": "AI helps with faster annotation, but it is still learning!",
-        "normal_cilia_only": "The model currently can only recognize normal cilia.",
-        "dynein_not_evaluated": "It does not yet evaluate dynein arms – these annotations need to be adjusted manually.",
-        "how_to_work": "How to work with AI annotations?",
-        "ai_marks_cilia": "AI automatically marks cilia in boxes, which you can adjust just like with manual annotation.",
-        "remember_expert_check": "Remember: AI is just a helper; your expert review is still important.",
-        "agree_button": "I understand"
+        "title": "AI annotation",
+        "steps": "of 5 steps",
+        "step1": "This short guide walks you through reviewing AI-suggested annotations on pizza images. You stay in control. Only change what needs changing.",
+        "step2": "When you run AI annotation, AI suggests a defect category for each pizza on the image.",
+        "step3": "Each annotation square is color-coded by confidence: green is high, orange is medium, and red means the suggestion most likely needs a change.",
+        "step4": "Click an annotation square to open a review panel. Change the defect category if needed, then press Accept to keep it or Decline to remove it. Everything else stays as AI suggested.",
+        "step5": "To edit more details, select the annotation and use the Annotation tab on the right sidebar."
     },
     "manualAnnotationTutorialDocumentation": {
         "title": "Manual Annotation Tutorial",

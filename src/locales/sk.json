@@ -379,14 +379,13 @@
         "step7": "Na zmazanie anotácie použite pravý klik, alebo ju odstráňte v záložke Anotácia v pravom paneli."
     },
     "AItutorial": {
-        "title": "Automatická anotácia",
-        "ai_helping": "AI pomáha pri rýchlejšom anotovaní, ale zatiaľ sa učí!",
-        "normal_cilia_only": "Model aktuálne dokáže rozpoznať iba normálne riasinky.",
-        "dynein_not_evaluated": "Dyneínové ramienka zatiaľ nevyhodnocuje – tieto anotácie je potrebné upraviť ručne.",
-        "how_to_work": "Ako pracovať s AI anotáciami?",
-        "ai_marks_cilia": "AI automaticky označí riasinky do boxov, ktoré môžeš upraviť presne tak, ako pri manuálnom označovaní.",
-        "remember_expert_check": "Nezabudni: AI je len pomocník, tvoja odborná kontrola je stále dôležitá.",
-        "agree_button": "Rozumiem"
+        "title": "AI anotácia",
+        "steps": "z 5 krokov",
+        "step1": "Tento krátky sprievodca vás prevedie kontrolou návrhov AI anotácií na obrázkoch pizze. Rozhodujete vy. Zmeňte len to, čo treba.",
+        "step2": "Po spustení AI anotácie navrhne AI kategóriu závady pri každej pizze na snímke.",
+        "step3": "Farba každého anotačného štvorca znamená istotu AI: zelená je vysoká, oranžová stredná a červená zvyčajne vyžaduje úpravu.",
+        "step4": "Kliknite na anotačný štvorec a otvorí sa panel na kontrolu. Zmeňte kategóriu závady ak treba, potom stlačte Prijať alebo Odmietnuť. Zvyšok zostane tak, ako navrhlo AI.",
+        "step5": "Pre úpravu ďalších detailov vyberte anotáciu a použite záložku Anotácia v pravom paneli."
     },
     "manualAnnotationTutorialDocumentation": {
         "title": "Návod na manuálnu anotáciu",

@@ -437,6 +437,15 @@
         "step6": "Na úpravu anotácie ju vyberte a v záložke Anotácia v pravom paneli zmeňte kategóriu defektu a súvisiace polia.",
         "step7": "Na zmazanie anotácie použite pravý klik, alebo ju odstráňte v záložke Anotácia v pravom paneli."
     },
+    "AItutorial": {
+        "title": "AI anotácia",
+        "steps": "z 5 krokov",
+        "step1": "Tento krátky sprievodca vás prevedie kontrolou návrhov AI anotácií na obrázkoch pizze. Rozhodujete vy. Zmeňte len to, čo treba.",
+        "step2": "Po spustení AI anotácie navrhne AI kategóriu závady pri každej pizze na snímke.",
+        "step3": "Farba každého anotačného štvorca znamená istotu AI: zelená je vysoká, oranžová stredná a červená zvyčajne vyžaduje úpravu.",
+        "step4": "Kliknite na anotačný štvorec a otvorí sa panel na kontrolu. Zmeňte kategóriu závady ak treba, potom stlačte Prijať alebo Odmietnuť. Zvyšok zostane tak, ako navrhlo AI.",
+        "step5": "Pre úpravu ďalších detailov vyberte anotáciu a použite záložku Anotácia v pravom paneli."
+    },
     "manualAnnotationTutorialDocumentation": {
         "title": "Návod na manuálnu anotáciu",
         "steps": {
