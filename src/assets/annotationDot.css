@@ -1,0 +1,88 @@
+.annotation-dot {
+  position: relative; 
+  display: inline-block;
+  width: 25px;  
+  height: 25px; 
+  border-radius: 50%; 
+  margin-right: 20px; 
+  flex-shrink: 0;
+}
+
+.annotation-square {
+  position: relative; 
+  display: inline-block;
+  width: 25px;  
+  height: 25px; 
+  margin-right: 20px; 
+  flex-shrink: 0;
+}
+
+.dyneinArms-unknown::before {
+  content: '';
+}
+
+.dyneinArms-both::before,
+.dyneinArms-both::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px; 
+  height: 3px; 
+  background-color: white; 
+}
+
+.dyneinArms-both::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.dyneinArms-both::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.dyneinArms-outer::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px; 
+  height: 3px; 
+  background-color: white;
+}
+
+.dyneinArms-inner::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 3px;  
+  background-color: white; 
+  z-index: 0;
+}
+
+.dyneinArms-inner::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 115%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 3px;  
+  background-color: white; 
+  z-index: 0;
+}
+
+.dyneinArms-none::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;  
+  height: 3px; 
+  background-color: white;
+}

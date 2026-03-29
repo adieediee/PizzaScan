@@ -1,0 +1,42 @@
+{
+  "name": "Ciliascan",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev_old": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "cd backend && node main.js",
+    "dev": "concurrently \"vite\" \"cd backend && node main.js\""
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@tauri-apps/plugin-store": "^2.2.0",
+    "@vueform/toggle": "^2.1.4",
+    "chart.js": "^4.4.6",
+    "concurrently": "^9.0.1",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "markerjs2": "^2.32.2",
+    "pinia": "^2.2.2",
+    "tiff": "^6.1.1",
+    "tiff.js": "^1.0.0",
+    "uuid": "^11.1.0",
+    "vue": "^3.4.29",
+    "vue-chartjs": "^5.3.2",
+    "vue-i18n": "^10.0.4",
+    "ws": "^8.19.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.2.7",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.3.1"
+  }
+}

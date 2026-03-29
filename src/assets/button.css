@@ -1,0 +1,129 @@
+.btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+  margin: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  padding: 5px 10px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color:  var(--blue-blue3, #3E63DD);
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: var(--blue-blue3, #3E63DD)!important;
+}
+  
+.btn-outlined {
+    border: 1px solid var(--blue-blue3, #3E63DD);
+}
+
+.btn-filled {
+    background-color: var(--blue-blue3, #3E63DD);
+    color: white;
+}
+
+.btn-filled:hover {
+    color: white!important;
+}
+
+.btn-icon {
+  padding: 8px;
+  color: white;
+  border-radius: 10px;
+}
+
+.btn-icon:hover {
+  background-color: var(--blue-blue3, #3E63DD);
+}
+
+.btn-icon:active {
+  background-color: var(--blue-blue3, #3E63DD);
+}
+
+.btn:disabled {
+  border-color: var(--dark-dark3, #2D2D42);
+  color: var(--dark-dark2, #212134);
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+  color: var(--dark-dark2, #212134)!important; 
+}
+
+.btn:disabled .svg-inline--fa {
+  color: var(--dark-dark2, #212134)!important;
+}
+
+.btn:disabled .tooltip {
+  left: 43.5%;
+}
+
+.btn.highlighted {
+    background-color: #3E63DD;
+    color: white;
+    transition: background-color 0.3s ease; 
+}
+
+.chevron-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.chevron-btn.rotated {
+  transform: rotate(-90deg);
+}
+
+.deleteButton:hover {
+  background-color: #f480a783;;
+}
+
+.deleteButton:hover .svg-inline--fa {
+  color: #F480A6!important;
+}
+
+.reviewedButton:hover {
+  background-color: #3e63dd77;;
+}
+
+.reviewedButton:hover .svg-inline--fa {
+  color: #3E63DD!important;
+}
+
+.reviewedButton.reviewed {
+  background-color: #3e63dd77;
+}
+
+.reviewedButton.reviewed .svg-inline--fa {
+  color: #3E63DD!important;
+}
+
+.btn-close {
+  border: 1px solid #3e63dd00;
+  padding: 10px;
+}
+
+.btn-close svg {
+  font-size: 1rem;
+}
+
+.btn-close:hover {
+  border: 1px solid #3E63DD;
+  border-radius: 50%;
+}
+
+.red-button {
+  background:  #F480A6;
+  border: #F480A6;
+}
