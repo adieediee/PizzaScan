@@ -39,6 +39,7 @@
     />
     
     <AITutorial />
+    <AIDetectionTutorial />
     <DetailedStatistics />
     <Documentation />
     <Settings />
@@ -84,6 +85,7 @@ import StatusModal from './components/Modals/StatusInfo/GeneralStatusInfo.vue';
 import ImageChoices from './components/ContextMenu/ImageChoices.vue';
 import UploadStatus from './components/Modals/StatusInfo/UploadStatus.vue';
 import AITutorial from './components/Modals/AITutorial.vue';
+import AIDetectionTutorial from './components/Modals/AIDetectionTutorial.vue';
 import Welcome from './components/Modals/Welcome.vue';
 
 const boardingStore = useBoardingStore();

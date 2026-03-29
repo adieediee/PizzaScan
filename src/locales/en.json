@@ -379,6 +379,16 @@
         "step6": "To edit an annotation, select it and use the Annotation tab on the right to change the defect category and related fields.",
         "step7": "To delete an annotation, right-click it, or remove it in the Annotation tab on the right."
     },
+    "aiDetectionTutorial": {
+        "title": "AI Detection",
+        "steps": "of 6 steps",
+        "step1": "This short guide walks you through AI Detection. AI finds individual pizzas on the image and crops each one into a separate sub-image.",
+        "step2": "Sub-images appear in the left sidebar, listed under the original image. Click one to open it in the workspace.",
+        "step3": "Use the arrows at the bottom of the workspace to navigate between sub-images without going back to the sidebar.",
+        "step4": "Annotate each sub-image just like a regular image. Your annotations are linked to that sub-image.",
+        "step5": "Any annotation you add to a sub-image also appears on the main image. You always have the full picture.",
+        "step6": "You can annotate sub-images manually by drawing rectangles, or let AI do it automatically using the AI button."
+    },
     "AItutorial": {
         "title": "AI annotation",
         "steps": "of 5 steps",

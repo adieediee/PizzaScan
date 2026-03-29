@@ -18,6 +18,10 @@ export const useBoardingStore = defineStore('boarding', {
     automaticAnnotationTutorialOn: false,
     automaticAnnotationTutorialSeen: false,
     aiCurrentStep: 1,
+
+    aiDetectionTutorialOn: false,
+    aiDetectionTutorialSeen: false,
+    aiDetectionCurrentStep: 1,
   }),
 
   getters: {
@@ -43,6 +47,7 @@ export const useBoardingStore = defineStore('boarding', {
       }
       this.manualCurrentStep = parseInt(localStorage.getItem('manualCurrentStep')) || 0;
       this.automaticAnnotationTutorialSeen = localStorage.getItem('automaticAnnotationTutorialSeen') === 'true';
+      this.aiDetectionTutorialSeen = localStorage.getItem('aiDetectionTutorialSeen') === 'true';
       this.explainNav = localStorage.getItem('explainNav') === 'false' ? false : true;
     },
 
@@ -54,6 +59,7 @@ export const useBoardingStore = defineStore('boarding', {
       localStorage.setItem('currentStep', this.currentStep);
       localStorage.setItem('manualCurrentStep', this.manualCurrentStep);
       localStorage.setItem('automaticAnnotationTutorialSeen', this.automaticAnnotationTutorialSeen);
+      localStorage.setItem('aiDetectionTutorialSeen', this.aiDetectionTutorialSeen);
     },
 
     setCurrentStep(step) {
@@ -128,6 +134,22 @@ export const useBoardingStore = defineStore('boarding', {
         this.setAutomaticAnnotationTutorialOff();
         useAnnotationStore().automaticAnnotation();
       }
+    },
+
+    setAiDetectionTutorialOn() {
+      this.aiDetectionTutorialOn = true;
+      this.aiDetectionCurrentStep = 1;
+    },
+
+    setAiDetectionTutorialOff() {
+      this.aiDetectionTutorialOn = false;
+      this.aiDetectionTutorialSeen = true;
+      this.save();
+    },
+
+    setAiDetectionCurrentStep(step) {
+      this.aiDetectionCurrentStep = step;
+      if (this.aiDetectionCurrentStep >= 7) this.setAiDetectionTutorialOff();
     },
 
     setWelcome() {

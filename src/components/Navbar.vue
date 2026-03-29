@@ -302,7 +302,7 @@ const selectedTool = ref('normal');
 const emit = defineEmits(['systemStatus']);
 
 const automaticAnnotation = createAutomaticAnnotationHandler(boardingStore, annotationStore, canvasStore);
-const aiDetection = createAIDetectionHandler(imageStore, canvasStore);
+const aiDetection = createAIDetectionHandler(imageStore, canvasStore, boardingStore);
 
 const centerImage = () => {
   canvasStore.centerImage();

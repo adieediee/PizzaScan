@@ -378,6 +378,16 @@
         "step6": "Na úpravu anotácie ju vyberte a v záložke Anotácia v pravom paneli zmeňte kategóriu defektu a súvisiace polia.",
         "step7": "Na zmazanie anotácie použite pravý klik, alebo ju odstráňte v záložke Anotácia v pravom paneli."
     },
+    "aiDetectionTutorial": {
+        "title": "AI detekcia",
+        "steps": "zo 6 krokov",
+        "step1": "Tento krátky sprievodca vás prevedie AI detekciou. AI nájde jednotlivé pizze na snímke a každú oreže do samostatného pod-obrázka.",
+        "step2": "Pod-obrázky sa zobrazia v ľavom paneli, zozname pod pôvodným obrázkom. Kliknite na jeden, aby sa otvoril v pracovnej ploche.",
+        "step3": "Na pohyb medzi pod-obrázkami použite šípky v spodnej časti pracovnej plochy bez návratu do panela.",
+        "step4": "Každý pod-obrázok môžete anotovať rovnako ako bežný obrázok. Anotácie sú viazané na daný pod-obrázok.",
+        "step5": "Každá anotácia, ktorú pridáte k pod-obrázku, sa zobrazí aj na hlavnom obrázku. Máte vždy prehľad o celkovom výsledku.",
+        "step6": "Pod-obrázky môžete anotovať manuálne kreslením obdĺžnikov, alebo to nechajte na AI pomocou tlačidla AI."
+    },
     "AItutorial": {
         "title": "AI anotácia",
         "steps": "z 5 krokov",
