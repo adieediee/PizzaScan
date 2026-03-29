@@ -8,17 +8,17 @@
     <div class="ai-summary-rows">
       <div class="ai-summary-row" v-if="inspectionCount > 0">
         <span class="ai-summary-dot" style="background: #E05C3A"></span>
-        <span class="ai-summary-label">Needs Inspection</span>
+        <span class="ai-summary-label">May need correction</span>
         <span class="ai-summary-num">{{ inspectionCount }}</span>
       </div>
       <div class="ai-summary-row" v-if="reviewCount > 0">
         <span class="ai-summary-dot" style="background: #D4920A"></span>
-        <span class="ai-summary-label">Needs Review</span>
+        <span class="ai-summary-label">Needs check</span>
         <span class="ai-summary-num">{{ reviewCount }}</span>
       </div>
       <div class="ai-summary-row" v-if="confidentCount > 0">
         <span class="ai-summary-dot" style="background: #4CAF50"></span>
-        <span class="ai-summary-label">AI is confident</span>
+        <span class="ai-summary-label">Likely correct</span>
         <span class="ai-summary-num">{{ confidentCount }}</span>
       </div>
     </div>
