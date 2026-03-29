@@ -8,6 +8,7 @@
       aria-label="Quick feedback"
       @click.stop
     >
+      <div class="toast-glow" aria-hidden="true"></div>
       <div class="toast-header">
         <span class="toast-title">Why did you override the AI?</span>
         <button class="toast-close" @click="skip" aria-label="Close">
@@ -45,6 +46,10 @@
         </div>
       </div>
 
+      <div v-if="!timerStopped" class="toast-timer">
+        <div class="timer-bar" :style="{ width: timerPct + '%' }"></div>
+      </div>
+
       <div class="toast-actions">
         <button class="btn-skip" @click="skip">Skip</button>
         <button class="btn-submit" :disabled="!canSubmit" @click="submit">Submit</button>
@@ -54,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick } from 'vue';
+import { ref, computed, watch, nextTick, onUnmounted } from 'vue';
 import { useFeedbackToastStore } from '@/stores/FeedbackToastStore';
 import { useLoggingStore } from '@/stores/LoggStore';
 import { useCanvasStore } from '@/stores/CanvasStore';
@@ -70,11 +75,18 @@ const toastStore = useFeedbackToastStore();
 const loggingStore = useLoggingStore();
 const canvasStore = useCanvasStore();
 
+const TIMER_DURATION = 15000;
+const TIMER_STEP = 100;
+
 const selectedReason = ref(null);
 const otherText = ref('');
 const otherInputRef = ref(null);
 const toastRight = ref(GAP);
 const toastBottom = ref(GAP);
+const timerPct = ref(100);
+const timerStopped = ref(false);
+let dismissTimer = null;
+let timerInterval = null;
 
 const otherActive = computed(() => otherText.value.trim().length > 0 || (selectedReason.value === null && document.activeElement === otherInputRef.value));
 
@@ -96,6 +108,24 @@ function computePosition() {
   toastBottom.value = GAP;
 }
 
+function startTimer() {
+  timerPct.value = 100;
+  timerStopped.value = false;
+  let elapsed = 0;
+  timerInterval = setInterval(() => {
+    elapsed += TIMER_STEP;
+    timerPct.value = Math.max(0, 100 - (elapsed / TIMER_DURATION) * 100);
+  }, TIMER_STEP);
+  dismissTimer = setTimeout(() => skip(), TIMER_DURATION);
+}
+
+function stopTimer() {
+  clearTimeout(dismissTimer);
+  clearInterval(timerInterval);
+  dismissTimer = null;
+  timerInterval = null;
+}
+
 function selectReason(reason) {
   selectedReason.value = selectedReason.value === reason ? null : reason;
   otherText.value = '';
@@ -103,6 +133,10 @@ function selectReason(reason) {
 
 function onOtherFocus() {
   selectedReason.value = null;
+  if (!timerStopped.value) {
+    stopTimer();
+    timerStopped.value = true;
+  }
 }
 
 function onOtherInput() {
@@ -114,14 +148,19 @@ function onOtherInput() {
 function resetState() {
   selectedReason.value = null;
   otherText.value = '';
+  timerPct.value = 100;
+  timerStopped.value = false;
+  stopTimer();
 }
 
 function skip() {
+  stopTimer();
   toastStore.dismiss();
   resetState();
 }
 
 function submit() {
+  stopTimer();
   const reason = otherText.value.trim() || selectedReason.value;
   loggingStore.submitOverrideFeedback(reason, null, toastStore.currentImageId);
   toastStore.dismiss();
@@ -130,11 +169,16 @@ function submit() {
 
 watch(() => toastStore.visible, (visible) => {
   if (visible) {
-    nextTick(computePosition);
+    nextTick(() => {
+      computePosition();
+      startTimer();
+    });
   } else {
     resetState();
   }
 });
+
+onUnmounted(() => stopTimer());
 
 // Dismiss toast when navigating to a different image
 watch(() => canvasStore.selectedImage?.imageId, (newId, oldId) => {
@@ -272,6 +316,20 @@ watch(() => canvasStore.selectedImage?.imageId, (newId, oldId) => {
   color: #4a4a70;
 }
 
+.toast-timer {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.timer-bar {
+  height: 100%;
+  background: rgba(85, 102, 204, 0.6);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
 .toast-actions {
   display: flex;
   gap: 8px;
@@ -372,14 +430,18 @@ watch(() => canvasStore.selectedImage?.imageId, (newId, oldId) => {
   }
 }
 
-/* one-time glow pulse after appearing */
-.feedback-toast {
+/* one-time glow pulse — on child so Vue doesn't pick up the long duration for leave */
+.toast-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 17px;
+  pointer-events: none;
   animation: border-pulse 1.4s ease-out 0.5s both;
 }
 
 @keyframes border-pulse {
-  0%   { box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset; }
-  45%  { box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset, 0 0 0 2px rgba(85,102,204,0.35), 0 0 28px rgba(85,102,204,0.18); }
-  100% { box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset; }
+  0%   { box-shadow: none; }
+  45%  { box-shadow: 0 0 0 2px rgba(85, 102, 204, 0.35), 0 0 28px rgba(85, 102, 204, 0.18); }
+  100% { box-shadow: none; }
 }
 </style>

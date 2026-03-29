@@ -191,6 +191,10 @@ const handlePopupDefectTypeChange = (event) => {
   );
   if (!selectedDefect) return;
 
+  if (popupAnnotation.type === 'AI') {
+    feedbackToastStore.trackAIOverride(popupAnnotation.imageId, popupAnnotation.confidence);
+  }
+
   popupAnnotation.microtubularDefectValue = selectedDefect.value;
   popupAnnotation.microtubularDefect = selectedDefect.name;
   popupAnnotation.defectColor = selectedDefect.color;
