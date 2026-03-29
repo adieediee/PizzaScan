@@ -48,6 +48,7 @@
     <AddNewClass @systemStatus="handleStatusMessage" />
     <StatusModal ref="statusModal" />
     <UploadStatus ref="progressModal" />
+    <AIOverrideFeedbackToast />
 
   </div>
 </template>
@@ -80,6 +81,7 @@ import StatusModal from './components/Modals/StatusInfo/GeneralStatusInfo.vue';
 import ImageChoices from './components/ContextMenu/ImageChoices.vue';
 import UploadStatus from './components/Modals/StatusInfo/UploadStatus.vue';
 import AITutorial from './components/Modals/AITutorial.vue';
+import AIOverrideFeedbackToast from './components/AIOverrideFeedbackToast.vue';
 
 const boardingStore = useBoardingStore();
 const modalStore = useModalStore();

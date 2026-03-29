@@ -71,6 +71,7 @@ import { useCanvasStore } from '@/stores/CanvasStore';
 import { useAnnotationStore } from '@/stores/AnnotationsStore';
 import { useImageStore } from '@/stores/ImageStore';
 import { useBoardingStore } from '@/stores/BoardingStore';
+import { useFeedbackToastStore } from '@/stores/FeedbackToastStore';
 import { onMounted, watch, ref, defineExpose, nextTick, onUnmounted } from 'vue';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
@@ -84,6 +85,7 @@ const annotationStore = useAnnotationStore();
 const imageStore = useImageStore();
 const boardingStore = useBoardingStore();
 const websocketStore = useWebsocketStore();
+const feedbackToastStore = useFeedbackToastStore();
 
 const canvas = ref(null);
 const rect = ref(null);
@@ -121,7 +123,6 @@ const deleteAiAnnotation = () => {
   const annotation = aiReviewPopup.value.annotation;
   if (annotation) {
     annotationStore.deleteAnnotation(annotation);
-    drawImageWithPoints();
     imageStore.setSelectedAnnotation(null);
   }
   aiReviewPopup.value.visible = false;
@@ -177,6 +178,7 @@ const openAiReviewPopup = (annotation, event) => {
     top,
     annotation
   };
+  feedbackToastStore.setAiPopupAnchor(left, top);
 };
 
 const handlePopupDefectTypeChange = (event) => {
