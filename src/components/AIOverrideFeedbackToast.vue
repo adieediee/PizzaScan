@@ -178,6 +178,7 @@ watch(() => toastStore.visible, (visible) => {
   }
 });
 
+
 onUnmounted(() => stopTimer());
 
 // Dismiss toast when navigating to a different image
@@ -189,6 +190,47 @@ watch(() => canvasStore.selectedImage?.imageId, (newId, oldId) => {
 </script>
 
 <style scoped>
+.micro-toast {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(22, 30, 54, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(85, 204, 130, 0.3);
+  border-radius: 10px;
+  color: #90e8b0;
+  font-size: 0.78rem;
+  z-index: 1001;
+  cursor: pointer;
+  max-width: 320px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+.micro-icon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  color: #55cc88;
+}
+
+.micro-slide-enter-active {
+  animation: micro-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.micro-slide-leave-active {
+  animation: micro-out 0.2s ease both;
+}
+@keyframes micro-in {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes micro-out {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(8px); opacity: 0; }
+}
+
 .feedback-toast {
   position: fixed;
   width: 300px;

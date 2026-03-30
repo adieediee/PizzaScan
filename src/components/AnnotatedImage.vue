@@ -63,6 +63,17 @@
     </div>
 
     <SubImageNavigation />
+
+    <Transition name="micro-slide">
+      <div
+        v-if="feedbackToastStore.microToastVisible"
+        class="micro-toast"
+        @click="feedbackToastStore.dismissMicroToast()"
+      >
+        <fa :icon="['fas', 'circle-check']" class="micro-icon" />
+        <span>Your correction has been noted — it helps improve future results.</span>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -204,6 +215,7 @@ const handlePopupDefectTypeChange = (event) => {
   // updateAnnotationDefect handles feedback tracking, sync to linked, and AI→manual conversion
   annotationStore.updateAnnotationDefect(popupAnnotation.id, selectedDefect.name);
   popupAnnotation.defectColor = selectedDefect.color;
+  closeAiReviewPopup();
 };
 
 watch(() => boardingStore.wholeTutorialSeen, (seen) => {
@@ -726,6 +738,14 @@ watch(() => annotationStore.annotations, (newAnnotations) => {
   drawImageWithPoints();
 }, { deep: true });
 
+let microTimer = null;
+watch(() => feedbackToastStore.microToastVisible, (visible) => {
+  if (visible) {
+    clearTimeout(microTimer);
+    microTimer = setTimeout(() => feedbackToastStore.dismissMicroToast(), 3500);
+  }
+});
+
 watch(() => annotationStore.AIannotations, (newAnnotations) => {
   drawImageWithPoints();
 }, { deep: true });
@@ -974,7 +994,50 @@ defineExpose({
 </script>
 
 <style scoped>
+.micro-toast {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(22, 30, 54, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(85, 204, 130, 0.3);
+  border-radius: 10px;
+  color: #90e8b0;
+  font-size: 0.78rem;
+  z-index: 100;
+  cursor: pointer;
+  max-width: 320px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  pointer-events: all;
+}
+
+.micro-icon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  color: #55cc88;
+}
+
+.micro-slide-enter-active {
+  animation: micro-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.micro-slide-leave-active {
+  animation: micro-out 0.2s ease both;
+}
+@keyframes micro-in {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes micro-out {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(8px); opacity: 0; }
+}
+
 .annotated-image {
+  position: relative;
   display: flex;
   flex: 7;
   flex-direction: column;

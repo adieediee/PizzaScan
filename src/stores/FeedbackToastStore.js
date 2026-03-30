@@ -16,11 +16,15 @@ export const useFeedbackToastStore = defineStore('feedbackToast', {
     visible: false,
     currentImageId: null,
     aiPopupAnchor: { left: 0, top: 0 },
+    microToastVisible: false,
   }),
   actions: {
     trackAIOverride(imageId, confidence) {
       const pct = normalizeConfidence(confidence);
       if (pct === null || pct < CONFIDENCE_THRESHOLD) return;
+
+      this.microToastVisible = true;
+
       if (this.shownFor.includes(imageId)) return;
 
       this.overrides[imageId] = (this.overrides[imageId] || 0) + 1;
@@ -36,6 +40,9 @@ export const useFeedbackToastStore = defineStore('feedbackToast', {
     },
     dismiss() {
       this.visible = false;
+    },
+    dismissMicroToast() {
+      this.microToastVisible = false;
     },
   },
 });

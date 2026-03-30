@@ -53,7 +53,7 @@
             data-button="AI-button"
             @click.stop="handleAiButtonClick"
             :disabled="!boardingStore.wholeTutorialSeen"
-            :class="{ 'highlighted': boardingStore.currentStep === 2, 'tb-btn-active': aiFilterOpen }">
+            :class="{ 'highlighted': boardingStore.currentStep === 2, 'tb-btn-active': aiFilterOpen, 'tb-btn-ai--filter': hasAIAnnotations }">
             <span class="tb-ai-label">AI</span>
             <span v-if="!hasAIAnnotations" class="tb-label">Labels</span>
             <span v-if="!boardingStore.explainNav" class="tooltip">Run AI annotation</span>
@@ -906,6 +906,15 @@ defineExpose({
   .tb-btn-detect {
     color: #8888b8;
     border: 1px solid #22223a;
+  }
+
+  .tb-btn-ai.tb-btn-ai--filter {
+    width: 90px;
+    justify-content: flex-start;
+  }
+
+  .tb-btn-ai.tb-btn-ai--filter .tb-chevron {
+    margin-left: auto;
   }
 
   .tb-btn-ai:hover:not(:disabled),
