@@ -28,7 +28,7 @@ export const useAnnotationStore = defineStore("annotation", {
       {
         name: "Missing center salami",
         value: "missing-center-salami",
-        color: "#D9001B",
+        color: "#FF2D2D",
         count: 0,
         description: "",
       },
@@ -43,7 +43,7 @@ export const useAnnotationStore = defineStore("annotation", {
       {
         name: "Extra salami",
         value: "extra-salami",
-        color: "#a11cff",
+        color: "#C84BFF",
         count: 0,
         description: "",
       },
@@ -57,7 +57,7 @@ export const useAnnotationStore = defineStore("annotation", {
       {
         name: "Other defect",
         value: "other-defect",
-        color: "#8B4513",
+        color: "#E8A020",
         count: 0,
         description: "",
       },

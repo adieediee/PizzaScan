@@ -20,6 +20,27 @@
         </svg>
         PizzaScan
       </span>
+      <div class="brand-divider"></div>
+      <div class="file-actions">
+        <button
+          id="open-project-button"
+          class="btn btn-file-action"
+          data-button="openProjectButton"
+          @click="handleOpenProject"
+          :disabled="!boardingStore.wholeTutorialSeen">
+          <fa :icon="['fas', 'folder-open']" />
+          {{ $t('navigation.buttons.openProject') }}
+        </button>
+        <button
+          id="save-button"
+          class="btn btn-file-action"
+          data-button="saveProjectButton"
+          @click="saveProject()"
+          :disabled="!boardingStore.wholeTutorialSeen">
+          <fa :icon="['fas', 'floppy-disk']" />
+          {{ $t('navigation.buttons.save') }}
+        </button>
+      </div>
     </div>
     <div class="navbar-middle">
       <div class="toolbar-pill">
@@ -232,26 +253,6 @@
     </div>
     <div class="navbar-right">
       <div>
-        <button
-          id="open-project-button"
-          class="btn btn-outlined" 
-          data-button="openProjectButton" 
-          @click="handleOpenProject"
-          :disabled="!boardingStore.wholeTutorialSeen">
-          {{$t('navigation.buttons.openProject')}}
-        </button>
-      </div>
-      <div>
-        <button
-          id="save-button"
-          class="btn btn-outlined" 
-          @click="saveProject()"
-          data-button="saveProjectButton"  
-          :disabled="!boardingStore.wholeTutorialSeen">
-          {{$t('navigation.buttons.save')}}
-        </button>
-      </div>
-      <div>
         <button 
           id="export-button"
           class="btn btn-filled" 
@@ -277,16 +278,23 @@
       <div>
         <button
           id="documentation-button"
-          class="btn btn-icon" 
-          data-button="documentationButton" 
-          @click="toggleSettings" 
+          class="btn btn-icon"
+          data-button="documentationButton"
+          @click="openDocumentationModal"
           :disabled="!boardingStore.wholeTutorialSeen">
             <fa :icon="['fas', 'circle-question']" />
-            <span v-if="!boardingStore.explainNav && !settingsOpen" class="tooltip">{{$t('navigation.settings.documentation')}}</span>
-            <ul v-if="settingsOpen" class="dropdown-content dropdown-settings">
-              <li id="settings-documentation" @click="openDocumentationModal"> {{$t('navigation.settings.documentation')}} </li>
-              <li id="settings-feedback" @click="openFeedbackModal">  {{$t('navigation.settings.userFeedback')}} </li>
-            </ul>
+            <span v-if="!boardingStore.explainNav" class="tooltip">{{$t('navigation.settings.documentation')}}</span>
+        </button>
+      </div>
+      <div>
+        <button
+          id="feedback-button"
+          class="btn btn-icon"
+          data-button="feedbackButton"
+          @click="openFeedbackModal"
+          :disabled="!boardingStore.wholeTutorialSeen">
+            <fa :icon="['fas', 'comment']" />
+            <span v-if="!boardingStore.explainNav" class="tooltip">{{$t('navigation.settings.userFeedback')}}</span>
         </button>
       </div>
       <div>
@@ -751,6 +759,43 @@ defineExpose({
     font-weight: 700;
     letter-spacing: 0.03em;
     color: #ffffff;
+  }
+
+  .brand-divider {
+    width: 1px;
+    height: 20px;
+    background: #2a2a40;
+    margin: 0 8px;
+  }
+
+  .file-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .btn-file-action {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid #2a2a40;
+    color: #a0a0c0;
+    background: transparent;
+    white-space: nowrap;
+  }
+
+  .btn-file-action:hover:not(:disabled) {
+    background: #222238;
+    color: #e0e0ff;
+    border-color: #4a4a6a;
+  }
+
+  .btn-file-action:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 
   .brand-icon {
