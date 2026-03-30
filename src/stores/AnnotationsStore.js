@@ -4,6 +4,7 @@ import { useLoggingStore } from "./LoggStore";
 import { useImageStore } from "./ImageStore";
 import { useShortcutStore } from "./ShortcutStore";
 import { useCanvasStore } from "./CanvasStore";
+import { useFeedbackToastStore } from "./FeedbackToastStore";
 import { v4 as uuidv4 } from "uuid";
 
 export const useAnnotationStore = defineStore("annotation", {
@@ -259,6 +260,9 @@ export const useAnnotationStore = defineStore("annotation", {
     updateDyneinArmsOnClick(index) {
       const prev_dynein_arms = this.annotations[index].dyneinArmsValue;
       const previousState = { ...this.annotations[index] };
+      if (previousState.type === "AI") {
+        useFeedbackToastStore().trackAIOverride(previousState.imageId, previousState.confidence);
+      }
 
       const currentIndex = this.dyneinArms.findIndex(
         (arm) => arm.value === prev_dynein_arms,
@@ -446,6 +450,9 @@ export const useAnnotationStore = defineStore("annotation", {
       const previousState = {
         ...this.annotations.find((annotation) => annotation.id === id),
       };
+      if (previousState.type === "AI") {
+        useFeedbackToastStore().trackAIOverride(previousState.imageId, previousState.confidence);
+      }
       const prev_defect_name = this.annotations.find(
         (annotation) => annotation.id === id,
       ).microtubularDefectValue;
@@ -529,6 +536,9 @@ export const useAnnotationStore = defineStore("annotation", {
       const previousState = {
         ...this.annotations.find((annotation) => annotation.id === id),
       };
+      if (previousState.type === "AI") {
+        useFeedbackToastStore().trackAIOverride(previousState.imageId, previousState.confidence);
+      }
       const prev_arms = this.annotations.find(
         (annotation) => annotation.id === id,
       ).dyneinArmsValue;
@@ -729,6 +739,10 @@ export const useAnnotationStore = defineStore("annotation", {
     },
 
     deleteAnnotation(annotation) {
+      if (annotation.type === "AI") {
+        useFeedbackToastStore().trackAIOverride(annotation.imageId, annotation.confidence);
+      }
+
       const linked = this.getLinkedAnnotation(annotation);
 
       const toDelete = linked ? [annotation, linked] : [annotation];
