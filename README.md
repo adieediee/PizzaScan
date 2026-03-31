@@ -5,6 +5,7 @@ A Wizard of Oz annotation tool for pizza quality inspection research.
 ## Running the app
 
 ### Prerequisites
+
 - Node.js (v18 or newer)
 
 ### Install dependencies
@@ -29,11 +30,11 @@ Open your browser at `http://localhost:5173`.
 
 PizzaScan is a **Wizard of Oz** prototype — the AI does not run a real model, it uses pre-defined annotations. The app only works correctly with specific image files. **The file names must match exactly.**
 
-| Image | File name | Location | Scenario |
-|-------|-----------|----------|----------|
-| Good pizza | `good_pizzas.png` | `src/assets/images/good_pizzas.png` | Main flow — AI detection + labeling |
-| Bad pizza (banana) | `pizza_banana.png` | `src/assets/images/pizza_banana.png` | AI error flow |
-| Bad pizza (sardine) | `pizza_sardine.png` | `src/assets/images/pizza_sardine.png` | AI error flow |
+| Image               | File name           | Location                              | Scenario                            |
+| ------------------- | ------------------- | ------------------------------------- | ----------------------------------- |
+| Good pizza          | `good_pizzas.png`   | `src/assets/images/good_pizzas.png`   | Main flow — AI detection + labeling |
+| Bad pizza (banana)  | `pizza_banana.png`  | `src/assets/images/pizza_banana.png`  | AI error flow                       |
+| Bad pizza (sardine) | `pizza_sardine.png` | `src/assets/images/pizza_sardine.png` | AI error flow                       |
 
 > Only `good_pizzas.png` supports the full workflow. The bad pizza images trigger the AI error screen (unsupported image).
 
@@ -60,24 +61,14 @@ PizzaScan is a **Wizard of Oz** prototype — the AI does not run a real model, 
 
 Each AI label has a color indicating its confidence level:
 
-| Color | Confidence | What to do |
-|-------|-----------|------------|
-| 🟢 Green | High — likely correct | Accept |
-| 🟠 Orange | Medium — needs check | Review carefully, then accept or decline |
-| 🔴 Red | Low — most likely incorrect | Decline or correct |
+| Color     | Confidence                  | What to do                               |
+| --------- | --------------------------- | ---------------------------------------- |
+| 🟢 Green  | High — likely correct       | Accept                                   |
+| 🟠 Orange | Medium — needs check        | Review carefully, then accept or decline |
+| 🔴 Red    | Low — most likely incorrect | Decline or correct                       |
 
-**Accepting a label:** click the label → click **Accept** to keep it as-is (converts to a manual label).
-
-**Declining a label:** click the label → click **Decline** to remove it.
-
-**Accepting all at once:** click **Accept all** in the AI Annotation Summary panel on the right to confirm all AI labels in one step.
-
-You can also freely edit any label — move it, resize it, or change its defect category — before or after accepting.
+\*\*Feedback
 
 > After 3 overrides of high-confidence (green) labels, a feedback prompt appears asking why you overrode the AI.
 
 ---
-
-## Logging
-
-The backend server (port `9090`) records all user interactions to a JSON log file in the `backend/` folder. Log files are named `log_<timestamp>.json`.
