@@ -88,6 +88,7 @@ export const useAnnotationStore = defineStore("annotation", {
       { name: 'Iná', value: 'compound', color: '#FF7ED5', count: 0},
     ],*/
     loading: false,
+    aiError: false,
     annotationHistory: [],
   }),
   actions: {

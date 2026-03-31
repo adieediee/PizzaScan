@@ -135,6 +135,11 @@
             "title": "Načítava sa...",
             "message": "AI modal anotuje snímku, prosím čakajte..."
         },
+        "aiError": {
+            "title": "AI nedokázala spracovať obrázok",
+            "message": "Ospravedlňujeme sa, ale nepodarilo sa nám označiť tento obrázok. Skúste ho označiť manuálne.",
+            "close": "Zavrieť"
+        },
         "settings": {
             "title": "Nastavenia",
             "settings": {

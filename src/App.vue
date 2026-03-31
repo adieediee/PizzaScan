@@ -55,6 +55,7 @@
     <StatusModal ref="statusModal" />
     <UploadStatus ref="progressModal" />
     <AIOverrideFeedbackToast />
+    <AIErrorModal />
 
   </div>
 </template>
@@ -92,6 +93,7 @@ import AITutorial from './components/Modals/AITutorial.vue';
 import AIDetectionTutorial from './components/Modals/AIDetectionTutorial.vue';
 import Welcome from './components/Modals/Welcome.vue';
 import AIOverrideFeedbackToast from './components/AIOverrideFeedbackToast.vue';
+import AIErrorModal from './components/Modals/AIErrorModal.vue';
 import TrustCalibrationBanner from './components/TrustCalibrationBanner.vue';
 import { useConsentStore } from './stores/ConsentStore';
 

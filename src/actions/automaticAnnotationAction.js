@@ -4,6 +4,25 @@ import { v4 as uuidv4 } from "uuid";
 
 const PIZZA_SUB_IMAGE_COUNT = 8;
 
+// Sub-image names the AI was trained on
+const RECOGNIZED_SUB_IMAGES = new Set(
+  Array.from({ length: PIZZA_SUB_IMAGE_COUNT }, (_, i) => `pizza-${i + 1}`)
+);
+
+// Returns true when the image name suggests it is not a standard supported pizza
+function isUnsupportedImage(imageName) {
+  if (!imageName) return true;
+  const lower = imageName.toLowerCase().replace(/\.[^.]+$/, ''); // strip extension
+  // Exact match against known sub-images → always supported
+  if (RECOGNIZED_SUB_IMAGES.has(lower)) return false;
+  // Explicit unsupported image names (demo test images)
+  const UNSUPPORTED_NAMES = ['pizza_banana', 'pizza_sardine'];
+  if (UNSUPPORTED_NAMES.some((n) => lower.includes(n))) return true;
+  // Generic "bad" markers in the filename → unsupported
+  const BAD_MARKERS = ['zly', 'zla', 'zle', 'bad', 'invalid', 'unsupported', 'error'];
+  return BAD_MARKERS.some((m) => lower.includes(m));
+}
+
 const loadPizzaSubImages = (imageStore, canvasStore) => {
   if (!canvasStore.selectedImage) return;
 
@@ -100,6 +119,8 @@ export const createAutomaticAnnotationHandler = (boardingStore, annotationStore,
   return () => {
     if (!canvasStore.selectedImage) return;
 
+    const imageName = canvasStore.selectedImage.imageName;
+
     // Reset so annotations can be re-added on repeat runs
     imageStore.setRightClickedImage(canvasStore.selectedImage);
     canvasStore.selectedImage.aiAnnotated = false;
@@ -110,8 +131,14 @@ export const createAutomaticAnnotationHandler = (boardingStore, annotationStore,
 
     const delay = Math.floor(Math.random() * 2 + 2) * 1000; // 2–3 s
     setTimeout(() => {
-      addSquaresFromJson(annotationStore, canvasStore);
       annotationStore.loading = false;
+
+      if (isUnsupportedImage(imageName)) {
+        annotationStore.aiError = true;
+        return;
+      }
+
+      addSquaresFromJson(annotationStore, canvasStore);
 
       // Only after loading done → show tutorial (first time only)
       if (!boardingStore.automaticAnnotationTutorialSeen) {
@@ -121,8 +148,22 @@ export const createAutomaticAnnotationHandler = (boardingStore, annotationStore,
   };
 };
 
-export const createAIDetectionHandler = (imageStore, canvasStore, boardingStore) => {
+export const createAIDetectionHandler = (imageStore, canvasStore, boardingStore, annotationStore) => {
   return () => {
+    if (!canvasStore.selectedImage) return;
+
+    const imageName = canvasStore.selectedImage.imageName;
+
+    if (isUnsupportedImage(imageName)) {
+      // Brief loading simulation before showing error
+      annotationStore.loading = true;
+      setTimeout(() => {
+        annotationStore.loading = false;
+        annotationStore.aiError = true;
+      }, Math.floor(Math.random() * 2 + 2) * 1000);
+      return;
+    }
+
     loadPizzaSubImages(imageStore, canvasStore);
     if (!boardingStore.aiDetectionTutorialSeen) {
       boardingStore.setAiDetectionTutorialOn();

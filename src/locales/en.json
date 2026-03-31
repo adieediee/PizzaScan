@@ -136,6 +136,11 @@
             "title": "Loading",
             "message": "AI modal is labeling image, please wait..."
         },
+        "aiError": {
+            "title": "AI could not process the image",
+            "message": "We are sorry, but we couldn't label the image. Try to label manually.",
+            "close": "Close"
+        },
         "settings": {
             "title": "Settings",
             "settings": {

@@ -394,7 +394,7 @@ const aiFilterItemStyle = (color, active) => ({
 const emit = defineEmits(['systemStatus']);
 
 const automaticAnnotation = createAutomaticAnnotationHandler(boardingStore, annotationStore, canvasStore, imageStore);
-const aiDetection = createAIDetectionHandler(imageStore, canvasStore, boardingStore);
+const aiDetection = createAIDetectionHandler(imageStore, canvasStore, boardingStore, annotationStore);
 
 const centerImage = () => {
   canvasStore.centerImage();
