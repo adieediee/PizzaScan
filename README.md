@@ -25,57 +25,56 @@ Open your browser at `http://localhost:5173`.
 
 ---
 
-## Getting started
+## Supported images
 
-### What to upload
+PizzaScan is a **Wizard of Oz** prototype — the AI does not run a real model, it uses pre-defined annotations. The app only works correctly with specific image files. **The file names must match exactly.**
 
-PizzaScan is a **Wizard of Oz** prototype — the AI does not run a real model, it uses pre-defined annotations. To test the full workflow, upload the test image included in the project:
+| Image | File name | Location | Scenario |
+|-------|-----------|----------|----------|
+| Good pizza | `good_pizzas.png` | `src/assets/images/good_pizzas.png` | Main flow — AI detection + labeling |
+| Bad pizza (banana) | `pizza_banana.png` | `src/assets/images/pizza_banana.png` | AI error flow |
+| Bad pizza (sardine) | `pizza_sardine.png` | `src/assets/images/pizza_sardine.png` | AI error flow |
 
-```
-src/assets/images/good_pizzas.png
-```
-
-This image contains a standard pizza suitable for all scenarios below.
-
-> For unsupported image scenarios (AI error flow), you can also try:
-> `src/assets/images/pizza_banana.png` or `src/assets/images/pizza_sardine.png`
+> Only `good_pizzas.png` supports the full workflow. The bad pizza images trigger the AI error screen (unsupported image).
 
 ---
 
 ## Testing scenarios
 
-### 1. AI Detection + AI Labeling (main flow)
+### Scenario 1 — Main flow (good pizza)
 
 1. Upload `good_pizzas.png`
-2. Click **Detect** in the toolbar — this splits the pizza into 8 sub-images
-3. Click **AI Labels** — the AI annotates all sub-images with defect boxes
-4. Review the annotations in the right sidebar
+2. Click **Detect** in the toolbar — the pizza is split into 8 sub-images
+3. Click **AI Labels** — the AI model annotates the image with defect boxes
+4. Review the labels and apply the accept/decline rules below
+5. Check the **Statistics** tab in the right sidebar
 
-### 2. Accepting AI annotations
+### Scenario 2 — Unsupported image (bad pizza)
 
-- Click **Accept all** in the AI Annotation Summary to confirm all AI labels at once
-- Or click individual annotations and accept them one by one
-- Accepted annotations are converted to manual labels
+1. Upload `pizza_banana.png` or `pizza_sardine.png`
+2. Click **AI Labels** — the app shows an AI error screen (image not supported)
 
-### 3. Overriding AI annotations
+---
 
-- Click an AI annotation and change its defect type or delete it
-- After 3 overrides with high-confidence annotations, a feedback toast appears asking why you overrode the AI
+## Accept / Decline rules
 
-### 4. Manual annotation
+Each AI label has a color indicating its confidence level:
 
-- Use the annotation tools in the toolbar to draw boxes manually
-- Works independently of AI detection
+| Color | Confidence | What to do |
+|-------|-----------|------------|
+| 🟢 Green | High — likely correct | Accept |
+| 🟠 Orange | Medium — needs check | Review carefully, then accept or decline |
+| 🔴 Red | Low — most likely incorrect | Decline or correct |
 
-### 5. Deleting labels
+**Accepting a label:** click the label → click **Accept** to keep it as-is (converts to a manual label).
 
-- Right-click the image in the left sidebar for options to delete all labels or all AI labels
-- After deletion, AI can be re-run on the same image
+**Declining a label:** click the label → click **Decline** to remove it.
 
-### 6. Statistics
+**Accepting all at once:** click **Accept all** in the AI Annotation Summary panel on the right to confirm all AI labels in one step.
 
-- Statistics are available in the right sidebar under the **Project** tab
-- They reflect only the main image annotations (sub-image annotations are not double-counted)
+You can also freely edit any label — move it, resize it, or change its defect category — before or after accepting.
+
+> After 3 overrides of high-confidence (green) labels, a feedback prompt appears asking why you overrode the AI.
 
 ---
 
