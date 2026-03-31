@@ -342,9 +342,17 @@ onUnmounted(() => {
   }
 
   #AITutorialModal,
-  #AIDetectionTutorialModal {
-    top: 7%;
+  #AIDetectionTutorialModal,
+  #ManualTutorialModal {
+    position: fixed;
+    top: auto;
+    left: auto;
+    bottom: 24px;
+    right: calc(15% + 12px);
     margin-top: 0;
+    max-width: 300px;
+    min-width: 280px;
+    width: 280px;
   }
 
 </style>
