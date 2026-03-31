@@ -498,5 +498,9 @@
         "paste": "Label pasted",
         "undoDelete": "Undo deletion of defect category",
         "undoDeleteConfirm": "Undo"
+    },
+    "trustCalibration": {
+        "tooHigh": "AI suggestions may not always be correct. Please review them before confirming.",
+        "tooLow": "AI suggestions have a high success rate and can save you time. At least try to review them before rejecting them."
     }
 }
