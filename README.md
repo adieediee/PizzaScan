@@ -79,3 +79,11 @@ Each AI label has a color indicating its confidence level:
 The message appears as a banner at the top of the screen and disappears after 8 seconds or when closed manually.
 
 ---
+
+## Can't run locally?
+
+If you have trouble running the app locally, a hosted version is available at:
+
+**[https://pizzascan.netlify.app/](https://pizzascan.netlify.app/)**
+
+---
