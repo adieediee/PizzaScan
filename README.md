@@ -12,7 +12,7 @@ A Wizard of Oz annotation tool for pizza quality inspection research.
 
 ```sh
 npm install
-cd backend && npm install && cd ..
+
 ```
 
 ### Start the app
