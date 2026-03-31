@@ -9,29 +9,6 @@
         </button>
       </div>
 
-      <template v-if="trustStore.activeMessage === 'tooLow'">
-        <div v-if="!feedbackOpen" class="banner-feedback-link">
-          <button class="btn-link" @click="feedbackOpen = true">
-            {{ $t('trustCalibration.feedbackPrompt') }}
-          </button>
-        </div>
-        <div v-else class="banner-feedback-form">
-          <textarea
-            v-model="feedbackText"
-            class="banner-textarea"
-            rows="3"
-            :placeholder="$t('trustCalibration.feedbackPlaceholder')"
-          />
-          <div class="banner-form-actions">
-            <button class="btn-cancel" @click="feedbackOpen = false">
-              {{ $t('trustCalibration.dismiss') }}
-            </button>
-            <button class="btn-send" :disabled="!feedbackText.trim()" @click="submitFeedback">
-              {{ $t('trustCalibration.send') }}
-            </button>
-          </div>
-        </div>
-      </template>
     </div>
   </Transition>
 </template>
