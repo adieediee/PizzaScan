@@ -119,6 +119,14 @@ export const createAutomaticAnnotationHandler = (boardingStore, annotationStore,
   return () => {
     if (!canvasStore.selectedImage) return;
 
+    // If a sub-image is selected, switch to the parent image instead
+    if (canvasStore.selectedImage.isSubImage) {
+      const parentImage = imageStore.activeSubImageParent;
+      if (!parentImage) return;
+      canvasStore.setImage(parentImage);
+      imageStore.clearSubImageSelection();
+    }
+
     const imageName = canvasStore.selectedImage.imageName;
 
     // Reset so annotations can be re-added on repeat runs
@@ -151,6 +159,14 @@ export const createAutomaticAnnotationHandler = (boardingStore, annotationStore,
 export const createAIDetectionHandler = (imageStore, canvasStore, boardingStore, annotationStore) => {
   return () => {
     if (!canvasStore.selectedImage) return;
+
+    // If a sub-image is selected, switch to the parent image instead
+    if (canvasStore.selectedImage?.isSubImage) {
+      const parentImage = imageStore.activeSubImageParent;
+      if (!parentImage) return;
+      canvasStore.setImage(parentImage);
+      imageStore.clearSubImageSelection();
+    }
 
     const imageName = canvasStore.selectedImage.imageName;
 
