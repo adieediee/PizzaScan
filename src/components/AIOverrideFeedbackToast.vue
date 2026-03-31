@@ -63,6 +63,7 @@ import { ref, computed, watch, nextTick, onUnmounted } from 'vue';
 import { useFeedbackToastStore } from '@/stores/FeedbackToastStore';
 import { useLoggingStore } from '@/stores/LoggStore';
 import { useCanvasStore } from '@/stores/CanvasStore';
+import { useModalStore } from '@/stores/ModalStore';
 
 const GAP = 16;
 
@@ -74,6 +75,7 @@ const PRESET_OPTIONS = [
 const toastStore = useFeedbackToastStore();
 const loggingStore = useLoggingStore();
 const canvasStore = useCanvasStore();
+const modalStore = useModalStore();
 
 const TIMER_DURATION = 15000;
 const TIMER_STEP = 100;
@@ -165,6 +167,7 @@ function submit() {
   loggingStore.submitOverrideFeedback(reason, null, toastStore.currentImageId);
   toastStore.dismiss();
   resetState();
+  modalStore.openModal('reportProblem', { initialPhase: 'thanks' });
 }
 
 watch(() => toastStore.visible, (visible) => {

@@ -507,6 +507,10 @@
     },
     "trustCalibration": {
         "tooHigh": "AI návrhy nemusia byť vždy správne. Pred potvrdením ich radšej skontrolujte.",
-        "tooLow": "AI návrhy dosahujú vysokú úspšnosť a môžu vám ušetriť čas. Skúste ich pred odmietnutím aspoň skontrolovať."
+        "tooLow": "AI návrhy dosahujú vysokú úspšnosť a môžu vám ušetriť čas. Skúste ich pred odmietnutím aspoň skontrolovať.",
+        "feedbackPrompt": "Chcete nám povedať prečo?",
+        "feedbackPlaceholder": "Popíšte, prečo ste návrhy odmietli...",
+        "send": "Odoslať",
+        "dismiss": "Zavrieť"
     }
 }
