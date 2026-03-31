@@ -5,6 +5,7 @@
       ref="nav" 
       @systemStatus="handleStatusMessage"
     />
+    <TrustCalibrationBanner />
     <main class="content">
       <LeftSidebar 
         @openImageMenu="openImageMenu"
@@ -91,6 +92,7 @@ import AITutorial from './components/Modals/AITutorial.vue';
 import AIDetectionTutorial from './components/Modals/AIDetectionTutorial.vue';
 import Welcome from './components/Modals/Welcome.vue';
 import AIOverrideFeedbackToast from './components/AIOverrideFeedbackToast.vue';
+import TrustCalibrationBanner from './components/TrustCalibrationBanner.vue';
 
 const boardingStore = useBoardingStore();
 const modalStore = useModalStore();

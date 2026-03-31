@@ -83,6 +83,7 @@ import { useAnnotationStore } from '@/stores/AnnotationsStore';
 import { useImageStore } from '@/stores/ImageStore';
 import { useBoardingStore } from '@/stores/BoardingStore';
 import { useFeedbackToastStore } from '@/stores/FeedbackToastStore';
+import { useTrustCalibrationStore } from '@/stores/TrustCalibrationStore';
 import { onMounted, watch, ref, defineExpose, nextTick, onUnmounted } from 'vue';
 import { useWebsocketStore } from '@/stores/websocketStore';
 
@@ -97,6 +98,7 @@ const imageStore = useImageStore();
 const boardingStore = useBoardingStore();
 const websocketStore = useWebsocketStore();
 const feedbackToastStore = useFeedbackToastStore();
+const trustStore = useTrustCalibrationStore();
 
 const canvas = ref(null);
 const rect = ref(null);
@@ -135,6 +137,8 @@ const acceptAiAnnotation = () => {
     const linked = annotationStore.getLinkedAnnotation(annotation);
     if (linked) convertToManual(linked);
     drawImageWithPoints();
+    console.log('[Trust] acceptAiAnnotation called');
+    trustStore.recordAccept();
   }
   aiReviewPopup.value.visible = false;
   aiReviewPopup.value.annotation = null;
@@ -143,6 +147,7 @@ const acceptAiAnnotation = () => {
 const deleteAiAnnotation = () => {
   const annotation = aiReviewPopup.value.annotation;
   if (annotation) {
+    trustStore.recordDecline(normalizeConfidence(annotation.confidence));
     annotationStore.deleteAnnotation(annotation);
     imageStore.setSelectedAnnotation(null);
   }

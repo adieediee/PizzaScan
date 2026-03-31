@@ -497,5 +497,9 @@
         "paste": "Anotace byla přidána",
         "undoDelete": "Vrátit odstránenou kategorii defektu",
         "undoDeleteConfirm": "Vrátit"
+    },
+    "trustCalibration": {
+        "tooHigh": "Návrhy AI nemusí být vždy správné. Před potvrzením je radšej zkontrolujte.",
+        "tooLow": "Návrhy AI mají vysoké úspěšnosti a mohou vám ušetřit čas. Zkuste je před odmítnutím alespoň zkontrolovat."
     }
 }

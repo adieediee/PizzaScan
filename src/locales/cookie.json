@@ -555,5 +555,9 @@
         "upload": "Obrázky sa načítavajú, prosím čakajte...",
         "copy": "Anotácia bola skopírovaná, pridajte ju kliknutím CTRL + V",
         "paste": "Anotácia bola pridaná"
+    },
+    "trustCalibration": {
+        "tooHigh": "AI návrhy nemusia byť vždy správne. Pred potvrdením ich radšej skontrolujte.",
+        "tooLow": "AI návrhy dosahujú vysokú úspšnosť a môžu vám ušetriť čas. Skúste ich pred odmietnutím aspoň skontrolovať."
     }
 }
