@@ -1,28 +1,76 @@
 <template>
   <Transition name="banner-slide">
     <div v-if="trustStore.activeMessage" class="trust-banner" :class="trustStore.activeMessage">
-      <fa :icon="['fas', 'triangle-exclamation']" class="banner-icon" />
-      <span class="banner-text">{{ message }}</span>
-      <button class="banner-close" @click="trustStore.dismissMessage()">
-        <fa :icon="['fas', 'xmark']" />
-      </button>
+      <div class="banner-top">
+        <fa :icon="['fas', 'triangle-exclamation']" class="banner-icon" />
+        <span class="banner-text">{{ message }}</span>
+        <button class="banner-close" @click="dismiss">
+          <fa :icon="['fas', 'xmark']" />
+        </button>
+      </div>
+
+      <template v-if="trustStore.activeMessage === 'tooLow'">
+        <div v-if="!feedbackOpen" class="banner-feedback-link">
+          <button class="btn-link" @click="feedbackOpen = true">
+            {{ $t('trustCalibration.feedbackPrompt') }}
+          </button>
+        </div>
+        <div v-else class="banner-feedback-form">
+          <textarea
+            v-model="feedbackText"
+            class="banner-textarea"
+            rows="3"
+            :placeholder="$t('trustCalibration.feedbackPlaceholder')"
+          />
+          <div class="banner-form-actions">
+            <button class="btn-cancel" @click="feedbackOpen = false">
+              {{ $t('trustCalibration.dismiss') }}
+            </button>
+            <button class="btn-send" :disabled="!feedbackText.trim()" @click="submitFeedback">
+              {{ $t('trustCalibration.send') }}
+            </button>
+          </div>
+        </div>
+      </template>
     </div>
   </Transition>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useTrustCalibrationStore } from '@/stores/TrustCalibrationStore';
+import { useModalStore } from '@/stores/ModalStore';
+import { useLoggingStore } from '@/stores/LoggStore';
 
 const { t } = useI18n();
 const trustStore = useTrustCalibrationStore();
+const modalStore = useModalStore();
+const loggingStore = useLoggingStore();
+
+const feedbackOpen = ref(false);
+const feedbackText = ref('');
 
 const message = computed(() => {
   if (trustStore.activeMessage === 'tooHigh') return t('trustCalibration.tooHigh');
   if (trustStore.activeMessage === 'tooLow')  return t('trustCalibration.tooLow');
   return '';
 });
+
+function dismiss() {
+  feedbackOpen.value = false;
+  feedbackText.value = '';
+  trustStore.dismissMessage();
+}
+
+function submitFeedback() {
+  if (!feedbackText.value.trim()) return;
+  loggingStore.submitProblemReport(feedbackText.value.trim());
+  feedbackText.value = '';
+  feedbackOpen.value = false;
+  trustStore.dismissMessage();
+  modalStore.openModal('reportProblem', { initialPhase: 'thanks' });
+}
 </script>
 
 <style scoped>
@@ -33,9 +81,9 @@ const message = computed(() => {
   transform: translateX(-50%);
   z-index: 999;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 12px 16px;
   max-width: 600px;
   width: calc(100% - 48px);
   background: rgba(30, 20, 20, 0.82);
@@ -46,6 +94,12 @@ const message = computed(() => {
   color: #fff;
   font-size: 0.84rem;
   box-shadow: 0 4px 24px rgba(0,0,0,0.45);
+}
+
+.banner-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .banner-icon {
@@ -73,6 +127,98 @@ const message = computed(() => {
 
 .banner-close:hover {
   color: #fff;
+}
+
+.banner-feedback-link {
+  padding-left: 26px;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #ff9f93;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.btn-link:hover {
+  color: #fff;
+}
+
+.banner-feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 26px;
+}
+
+.banner-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(220, 80, 60, 0.4);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.banner-textarea::placeholder {
+  color: rgba(255,255,255,0.35);
+}
+
+.banner-textarea:focus {
+  outline: none;
+  border-color: rgba(220, 80, 60, 0.75);
+}
+
+.banner-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-cancel:hover {
+  border-color: rgba(255,255,255,0.6);
+  color: #fff;
+}
+
+.btn-send {
+  background: #b03020;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 18px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-send:hover:not(:disabled) {
+  background: #c83820;
+}
+
+.btn-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .banner-slide-enter-active,

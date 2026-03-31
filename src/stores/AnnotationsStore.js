@@ -54,13 +54,6 @@ export const useAnnotationStore = defineStore("annotation", {
         count: 0,
         description: "",
       },
-      {
-        name: "Other defect",
-        value: "other-defect",
-        color: "#E8A020",
-        count: 0,
-        description: "",
-      },
     ],
     /*dyneinArms: [ //pre layman testing
       { name: 'Neviem', value: 'unknown', count: 0},
@@ -88,6 +81,7 @@ export const useAnnotationStore = defineStore("annotation", {
       { name: 'Iná', value: 'compound', color: '#FF7ED5', count: 0},
     ],*/
     loading: false,
+    aiError: false,
     annotationHistory: [],
   }),
   actions: {

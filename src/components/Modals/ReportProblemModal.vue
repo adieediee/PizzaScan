@@ -76,7 +76,7 @@ import { useLoggingStore } from '@/stores/LoggStore';
 const modalStore = useModalStore();
 const loggingStore = useLoggingStore();
 
-const phase = ref('form');
+const phase = ref(modalStore.modalOptions?.initialPhase ?? 'form');
 const message = ref('');
 
 const canSend = computed(() => message.value.trim().length > 0);
@@ -85,7 +85,7 @@ watch(
   () => modalStore.activeModal,
   (name) => {
     if (name === 'reportProblem') {
-      phase.value = 'form';
+      phase.value = modalStore.modalOptions?.initialPhase ?? 'form';
       message.value = '';
     }
   }

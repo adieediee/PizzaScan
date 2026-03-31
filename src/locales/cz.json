@@ -135,6 +135,11 @@
             "title": "Načítá se...",
             "message": "AI model anotuje snímek, prosím, čekejte..."
         },
+        "aiError": {
+            "title": "AI nedokázala zpracovat obrázek",
+            "message": "Omlouváme se, ale nepodařilo se nám označit tento obrázek. Zkuste ho označit ručně.",
+            "close": "Zavřít"
+        },
         "settings": {
             "title": "Nastavení",
             "settings": {
@@ -156,6 +161,13 @@
                 "description2": "Níže vidíte existující kategorie defektů. Můžete je upravovat nebo mazat.",
                 "page": "Strana",
                 "of": "z"
+            },
+            "privacy": {
+                "title": "Soukromí",
+                "toggleLabel": "Povolit sběr dat o používání",
+                "toggleSub": "Anonymizovaná data o používání AI funkcí",
+                "statusOn": "Sběr dat je zapnutý",
+                "statusOff": "Sběr dat je vypnutý"
             }
         },
         "feedback": {
@@ -500,6 +512,10 @@
     },
     "trustCalibration": {
         "tooHigh": "Návrhy AI nemusí být vždy správné. Před potvrzením je radšej zkontrolujte.",
-        "tooLow": "Návrhy AI mají vysoké úspěšnosti a mohou vám ušetřit čas. Zkuste je před odmítnutím alespoň zkontrolovat."
+        "tooLow": "Návrhy AI mají vysoké úspěšnosti a mohou vám ušetřit čas. Zkuste je před odmítnutím alespoň zkontrolovat.",
+        "feedbackPrompt": "Chcete nám říct proč?",
+        "feedbackPlaceholder": "Popište, proč jste návrhy odmítli...",
+        "send": "Odeslat",
+        "dismiss": "Zavřít"
     }
 }

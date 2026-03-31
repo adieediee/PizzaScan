@@ -55,6 +55,7 @@
     <StatusModal ref="statusModal" />
     <UploadStatus ref="progressModal" />
     <AIOverrideFeedbackToast />
+    <AIErrorModal />
 
   </div>
 </template>
@@ -92,7 +93,9 @@ import AITutorial from './components/Modals/AITutorial.vue';
 import AIDetectionTutorial from './components/Modals/AIDetectionTutorial.vue';
 import Welcome from './components/Modals/Welcome.vue';
 import AIOverrideFeedbackToast from './components/AIOverrideFeedbackToast.vue';
+import AIErrorModal from './components/Modals/AIErrorModal.vue';
 import TrustCalibrationBanner from './components/TrustCalibrationBanner.vue';
+import { useConsentStore } from './stores/ConsentStore';
 
 const boardingStore = useBoardingStore();
 const modalStore = useModalStore();
@@ -105,8 +108,10 @@ const loggingStore = useLoggingStore();
 const statusModal = ref(null);
 const progressModal = ref(null);
 const canvasStore = useCanvasStore();
+const consentStore = useConsentStore();
 
 boardingStore.load();
+consentStore.load();
 
 const imageContextMenuVisible = ref(false);
 const contextMenuPosition = ref({ x: 0, y: 0 });
@@ -339,9 +344,17 @@ onUnmounted(() => {
   }
 
   #AITutorialModal,
-  #AIDetectionTutorialModal {
-    top: 7%;
+  #AIDetectionTutorialModal,
+  #ManualTutorialModal {
+    position: fixed;
+    top: auto;
+    left: auto;
+    bottom: 24px;
+    right: calc(15% + 12px);
     margin-top: 0;
+    max-width: 300px;
+    min-width: 280px;
+    width: 280px;
   }
 
 </style>

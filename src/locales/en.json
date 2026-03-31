@@ -136,6 +136,11 @@
             "title": "Loading",
             "message": "AI modal is labeling image, please wait..."
         },
+        "aiError": {
+            "title": "AI could not process the image",
+            "message": "We are sorry, but we couldn't label the image. Try to label manually.",
+            "close": "Close"
+        },
         "settings": {
             "title": "Settings",
             "settings": {
@@ -157,6 +162,13 @@
                 "description2": "Below you can see the existing defect categories. You can edit or delete them as needed.",
                 "page": "Page",
                 "of": "of"
+            },
+            "privacy": {
+                "title": "Privacy",
+                "toggleLabel": "Allow usage data collection",
+                "toggleSub": "Anonymized data about AI feature usage",
+                "statusOn": "Data collection is enabled",
+                "statusOff": "Data collection is disabled"
             }
         },
         "feedback": {
@@ -501,6 +513,10 @@
     },
     "trustCalibration": {
         "tooHigh": "AI suggestions may not always be correct. Please review them before confirming.",
-        "tooLow": "AI suggestions have a high success rate and can save you time. At least try to review them before rejecting them."
+        "tooLow": "AI suggestions have a high success rate and can save you time. At least try to review them before rejecting them.",
+        "feedbackPrompt": "Would you like to tell us why?",
+        "feedbackPlaceholder": "Describe why you rejected the suggestions...",
+        "send": "Send",
+        "dismiss": "Dismiss"
     }
 }
