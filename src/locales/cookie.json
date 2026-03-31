@@ -216,6 +216,13 @@
                 "description2": "Nižšie vidíte existujúce kategórie defektov. Môžete ich upravovať alebo mazať.",
                 "page": "Strana",
                 "of": "z"
+            },
+            "privacy": {
+                "title": "Súkromie",
+                "toggleLabel": "Povoliť zber dát o používaní",
+                "toggleSub": "Anonymizované dáta o používaní AI funkcií",
+                "statusOn": "Zber dát je zapnutý",
+                "statusOff": "Zber dát je vypnutý"
             }
         },
         "feedback": {

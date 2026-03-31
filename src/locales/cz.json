@@ -156,6 +156,13 @@
                 "description2": "Níže vidíte existující kategorie defektů. Můžete je upravovat nebo mazat.",
                 "page": "Strana",
                 "of": "z"
+            },
+            "privacy": {
+                "title": "Soukromí",
+                "toggleLabel": "Povolit sběr dat o používání",
+                "toggleSub": "Anonymizovaná data o používání AI funkcí",
+                "statusOn": "Sběr dat je zapnutý",
+                "statusOff": "Sběr dat je vypnutý"
             }
         },
         "feedback": {

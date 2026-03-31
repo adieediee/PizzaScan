@@ -35,7 +35,6 @@
                 <button
                     id="WelcomeNextButton"
                     class="btn btn-filled"
-                    :disabled="step === 2 && !agreeChecked"
                     @click="nextStep"
                 >{{ nextButtonText }}</button>
             </div>
@@ -46,17 +45,21 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useBoardingStore } from '@/stores/BoardingStore';
+import { useConsentStore } from '@/stores/ConsentStore';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 const step = ref(0);
 const agreeChecked = ref(false);
 const boardingStore = useBoardingStore();
+const consentStore = useConsentStore();
 
 const nextStep = () => {
-    step.value++;
-    if (step.value === 3) {
+    if (step.value === 2) {
+        consentStore.setConsent(agreeChecked.value);
         boardingStore.setWelcome();
+    } else {
+        step.value++;
     }
 };
 

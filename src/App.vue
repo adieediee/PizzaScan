@@ -93,6 +93,7 @@ import AIDetectionTutorial from './components/Modals/AIDetectionTutorial.vue';
 import Welcome from './components/Modals/Welcome.vue';
 import AIOverrideFeedbackToast from './components/AIOverrideFeedbackToast.vue';
 import TrustCalibrationBanner from './components/TrustCalibrationBanner.vue';
+import { useConsentStore } from './stores/ConsentStore';
 
 const boardingStore = useBoardingStore();
 const modalStore = useModalStore();
@@ -105,8 +106,10 @@ const loggingStore = useLoggingStore();
 const statusModal = ref(null);
 const progressModal = ref(null);
 const canvasStore = useCanvasStore();
+const consentStore = useConsentStore();
 
 boardingStore.load();
+consentStore.load();
 
 const imageContextMenuVisible = ref(false);
 const contextMenuPosition = ref({ x: 0, y: 0 });

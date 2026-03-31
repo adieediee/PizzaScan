@@ -157,6 +157,13 @@
                 "description2": "Below you can see the existing defect categories. You can edit or delete them as needed.",
                 "page": "Page",
                 "of": "of"
+            },
+            "privacy": {
+                "title": "Privacy",
+                "toggleLabel": "Allow usage data collection",
+                "toggleSub": "Anonymized data about AI feature usage",
+                "statusOn": "Data collection is enabled",
+                "statusOff": "Data collection is disabled"
             }
         },
         "feedback": {
