@@ -16,18 +16,18 @@ function getBaseName(imageName) {
 }
 
 function isScenario0(imageName) {
-  return getBaseName(imageName) === 'scenario-0';
+  return getBaseName(imageName) === 'task-2';
 }
 
 function isScenario2(imageName) {
-  return getBaseName(imageName) === 'scenario-2';
+  return getBaseName(imageName) === 'task-4';
 }
 
 function isUnsupportedImage(imageName) {
   if (!imageName) return true;
   const lower = getBaseName(imageName);
   if (RECOGNIZED_SUB_IMAGES.has(lower)) return false;
-  if (lower === 'scenario-0' || lower === 'scenario-1' || lower === 'scenario-2') return false;
+  if (lower === 'task-2' || lower === 'task-3' || lower === 'task-4') return false;
   const UNSUPPORTED_NAMES = ['pizza_banana', 'pizza_sardine'];
   if (UNSUPPORTED_NAMES.some((n) => lower.includes(n))) return true;
   const BAD_MARKERS = ['zly', 'zla', 'zle', 'bad', 'invalid', 'unsupported', 'error'];
