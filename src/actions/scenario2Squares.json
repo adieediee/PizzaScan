@@ -1,0 +1,66 @@
+[
+  {
+    "x1": 180,
+    "y1": 859,
+    "x2": 1570,
+    "y2": 2249,
+    "confidence": 0.88,
+    "defectType": "normal"
+  },
+  {
+    "x1": 3031,
+    "y1": 180,
+    "x2": 4421,
+    "y2": 1570,
+    "confidence": 0.61,
+    "defectType": "missing-center-salami"
+  },
+  {
+    "x1": 5029,
+    "y1": 314,
+    "x2": 6419,
+    "y2": 1704,
+    "confidence": 0.61,
+    "defectType": "missing-center-salami"
+  },
+  {
+    "x1": 1990,
+    "y1": 1685,
+    "x2": 3380,
+    "y2": 3075,
+    "confidence": 0.9,
+    "defectType": "normal"
+  },
+  {
+    "x1": 3996,
+    "y1": 1872,
+    "x2": 5386,
+    "y2": 3262,
+    "confidence": 0.9,
+    "defectType": "normal"
+  },
+  {
+    "x1": 534,
+    "y1": 2765,
+    "x2": 1924,
+    "y2": 4155,
+    "confidence": 0.9,
+    "defectType": "normal"
+  },
+  {
+    "x1": 2704,
+    "y1": 3265,
+    "x2": 4094,
+    "y2": 4655,
+    "confidence": 0.9,
+    "defectType": "normal"
+  },
+  {
+    "x1": 5199,
+    "y1": 3297,
+    "x2": 6589,
+    "y2": 4687,
+    "confidence": 0.9,
+    "defectType": "normal"
+  }
+]

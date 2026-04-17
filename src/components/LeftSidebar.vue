@@ -127,8 +127,8 @@ const processFiles = (files) => {
           tiffVersion = 'TIFF';
         }
 
-        imageStore.addImage({
-          imageUrl: imageUrl, 
+        const newImage = {
+          imageUrl: imageUrl,
           imageName: imageName,
           isOpen: false,
           onceOpen: false,
@@ -137,7 +137,13 @@ const processFiles = (files) => {
           description: "",
           tiffVersion: tiffVersion,
           rawTiffData: rawTiffData,
-        });
+        };
+        imageStore.addImage(newImage);
+        const newIndex = imageStore.uploadedImages.length - 1;
+        canvasStore.setImage(newImage);
+        imageStore.updateImageInfo(newIndex);
+        imageStore.setSeenImage(newIndex);
+        emit('imageSelected');
 
         filesProcessed++;
         imageStore.currentPercentageUpload = (filesProcessed / numberFiles) * 100;
